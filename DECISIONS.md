@@ -358,16 +358,57 @@ flowchart TD
     E --> I[Accessible Mobile Drawer Menu]
 ```
 
-```text
-Desktop
-  ↓
-Two-dimensional composition (Asymmetric value proposition + Interactive demo centerpiece)
+### Phase 6 — Accessibility + UX Hardening
+- **Date:** 2026-08-18
+- **Semantic Structure:**
+  - Standardized HTML landmarks: `<header>`, `<nav>`, `<main id="main-content">`, `<section>`, `<footer>`.
+  - Added an accessible skip-to-content link (`Skip to main content`) as the first tabbable item on the page.
+  - Standardized heading hierarchy without level skipping:
+    - `H1`: `SEE WHAT CHANGED. KNOW WHAT MATTERS.`
+    - `H2`: `YOUR BUSINESS IS LOUD.`
+    - `H2`: `From scattered telemetry to human clarity.`
+    - `H2`: `The Operator Workspace`
+    - `H2`: `THE GOAL ISN'T MORE INFORMATION. IT'S BETTER ATTENTION.`
+    - `H2`: `DON'T MONITOR EVERYTHING. NOTICE WHAT MATTERS.`
+- **Keyboard Navigation & Focus System:**
+  - All interactive elements (`<button>`, `<a>`) support standard `Tab` / `Shift+Tab` keyboard order.
+  - Formulated consistent, high-contrast `:focus-visible` ring styling (`outline: 2px solid #FF4D00; outline-offset: 2px`).
+  - Added keyboard `Escape` key listener on the Telemetry Evidence Drawer to close modals instantly.
+- **Screen Reader & Live Region Hardening:**
+  - Implemented `aria-live="polite"` and `role="status"` on the investigation status indicator to broadcast telemetry progression to assistive tech.
+  - Wrapped simulated modal dialog with `role="dialog"`, `aria-modal="true"`, and clear `aria-label` descriptions.
+  - Decorative icons and background grids tagged with `aria-hidden="true"`.
+- **Honesty & Content Audit:**
+  - Confirmed zero fake testimonials, zero fake user counts, and zero fabricated partner logos.
+  - All data views explicitly tagged with `INTERACTIVE DEMO · EXAMPLE WORKSPACE` and `EXAMPLE WORKSPACE · DEMO DATA`.
+  - Copy audited to eliminate generic marketing cliches.
+- **State Machine Guarding & Timer Cleanup:**
+  - Added state guards to `startInvestigation` preventing concurrent executions or race conditions from rapid clicking.
+  - Guaranteed `timersRef` array cleanup upon component unmount to prevent memory leaks or stale state triggers.
+- **Verification:**
+  - Production build (`npm run build`) compiled in `1.06s` with zero errors or warnings.
+  - Keyboard navigation, escape key modal closing, and tab ordering verified.
+  - Tested reduced-motion behavior (all transitions snap cleanly without layout breaks).
+- **Current Status:** Phase 6: COMPLETE. Ready for Phase 7 (Final Polish & Easter Egg).
 
-Mobile
-  ↓
-Single-column narrative (Headline → Copy → CTA → Product Demo → Workflow → Workspace)
-  ↓
-Tactile, readable interaction without horizontal overflow
+```mermaid
+flowchart TD
+    A[First Visit] --> B[Understand Value Proposition]
+    B --> C[Inspect Example Signal Card]
+    C --> D[Trigger Investigation]
+    D --> E[Synthesize Verified Root Cause]
+    E --> F[Explore Conceptual Workflow & Workspace Feed]
+    F --> G[Read Product Philosophy]
+    G --> H[Final CTA Conversion]
+```
+
+```mermaid
+flowchart TD
+    A[User Input / Trigger] --> B{State Guard Check}
+    B -->|Valid: Idle State| C[Transition to Investigating]
+    B -->|Invalid: Already Busy| D[Ignore & Prevent Race Condition]
+    C --> E[Execute Timed Telemetry Scans]
+    E --> F[Reveal Verified Root Cause]
 ```
 
 ---
@@ -398,12 +439,16 @@ Tactile, readable interaction without horizontal overflow
   - *AI Implemented:* Mobile vertical connector indicators in `ProductWorkflow.jsx`, fluid touch targets across all interactive buttons, responsive tree restructuring in `InvestigationGraph.jsx`, and multi-breakpoint layout tuning.
   - *Manually Reviewed & Tuned:* Conducted strict overflow audits across 390px, 430px, 768px, 1024px, 1280px, and 1440px viewports; verified mobile tap targets (min 44px) and drawer ergonomics.
   - *Tested:* Production build bundle validation and responsive CSS property verification.
+- **Phase 6:**
+  - *AI Implemented:* Accessible skip-to-content link in `App.jsx`, `aria-live="polite"` live announcement regions and `Escape` key listener in `SignalDemo.jsx`, dialog semantics on evidence drawers, heading level normalization across all sections, and state machine race-condition guards.
+  - *Manually Reviewed & Tuned:* Verified semantic HTML elements (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`), confirmed zero fake metrics/claims, and validated contrast ratios across light and dark cards.
+  - *Tested:* Production build compilation, keyboard navigation flow, and timer cleanup verification.
 
 ---
 
 ## 10. Known Issues
 
-*None.* Layouts at 390px mobile, 1440px desktop, and all intermediate breakpoints are fully responsive with zero horizontal overflow.
+*None.* Semantic structure, keyboard accessibility, live regions, and build validation are fully hardened.
 
 ---
 
@@ -412,6 +457,7 @@ Tactile, readable interaction without horizontal overflow
 - Sound design / haptic audio feedback on signal investigation resolution (optional subtle click).
 - Keyboard navigation shortcuts (e.g., `Space` / `Enter` to step through investigation stages).
 - Interactive timeline scrubber to inspect signals over arbitrary time windows.
+
 
 
 

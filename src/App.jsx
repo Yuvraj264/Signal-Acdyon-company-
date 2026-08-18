@@ -22,11 +22,19 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-base)] text-[var(--text-primary)]">
+      {/* Accessible Skip-to-Content Navigation Link */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--text-primary)] focus:text-white focus:rounded-md focus:shadow-md focus:outline-2 focus:outline-[var(--accent-signal)] font-medium text-xs tracking-tight"
+      >
+        Skip to main content
+      </a>
+
       {/* 1. Navigation */}
       <Navbar onCtaClick={triggerInvestigation} />
 
-      {/* Main Homepage Flow */}
-      <main className="flex-1">
+      {/* Main Content Landmark */}
+      <main id="main-content" className="flex-1">
         {/* 2. Hero + Interactive Signal Investigation */}
         <Hero onInvestigateClick={triggerInvestigation} />
 
