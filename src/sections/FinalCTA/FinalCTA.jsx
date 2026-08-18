@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import Container from '../../components/Container'
 import Button from '../../components/Button'
 import Badge from '../../components/Badge'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 /**
  * FinalCTA Section for SIGNAL.

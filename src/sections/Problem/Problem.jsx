@@ -2,7 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import Container from '../../components/Container'
 import Badge from '../../components/Badge'
-import { Bell, FileSpreadsheet, LayoutDashboard, MessageSquare, BarChart3, ArrowRight, Zap } from 'lucide-react'
+import { Bell, FileSpreadsheet, LayoutDashboard, MessageSquare, ArrowRight, Zap } from 'lucide-react'
 
 /**
  * Problem Section for SIGNAL.

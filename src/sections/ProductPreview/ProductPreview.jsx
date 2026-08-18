@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import Container from '../../components/Container'
 import SectionHeading from '../../components/SectionHeading'
 import Badge from '../../components/Badge'
-import { AlertCircle, ArrowUpRight, GitCommit, Layers, Sparkles, Check, ChevronRight } from 'lucide-react'
+import { GitCommit, Sparkles } from 'lucide-react'
 
 /**
  * ProductPreview: Illustrates the broader SIGNAL workspace interface with an interactive example signals feed.
@@ -84,7 +84,7 @@ export default function ProductPreview() {
           {/* Workspace Window Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/60 text-xs">
             <div className="flex items-center gap-2">
-              <div className="flex gap-1.5">
+              <div className="flex gap-1.5" aria-hidden="true">
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-strong)]" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-strong)]" />
                 <span className="w-2.5 h-2.5 rounded-full bg-[var(--border-strong)]" />
@@ -111,15 +111,18 @@ export default function ProductPreview() {
                 </span>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2" role="tablist" aria-label="Example Signals List">
                 {exampleSignals.map((signal) => {
                   const isSelected = signal.id === selectedId
                   return (
                     <button
                       key={signal.id}
                       type="button"
+                      role="tab"
+                      aria-selected={isSelected}
+                      aria-controls={`signal-panel-${signal.id}`}
                       onClick={() => setSelectedId(signal.id)}
-                      className={`w-full p-3.5 rounded-lg border text-left transition-all cursor-pointer ${
+                      className={`w-full p-3.5 rounded-lg border text-left transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--accent-signal)] ${
                         isSelected
                           ? 'bg-[var(--bg-surface)] border-[var(--accent-signal)] shadow-xs'
                           : 'bg-[var(--bg-surface)] border-[var(--border-subtle)] hover:border-[var(--border-strong)]'
@@ -128,6 +131,7 @@ export default function ProductPreview() {
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex items-center gap-2">
                           <span
+                            aria-hidden="true"
                             className={`h-2 w-2 rounded-full ${
                               isSelected ? 'bg-[var(--accent-signal)] animate-pulse' : 'bg-[var(--text-muted)]'
                             }`}
@@ -152,16 +156,21 @@ export default function ProductPreview() {
             </div>
 
             {/* Right Column: Selected Signal Causal Inspection */}
-            <div className="md:col-span-7 p-5 sm:p-7 space-y-6 bg-[var(--bg-surface)]">
+            <div 
+              id={`signal-panel-${selectedSignal.id}`}
+              role="tabpanel"
+              aria-label={`Inspection for ${selectedSignal.title}`}
+              className="md:col-span-7 p-5 sm:p-7 space-y-6 bg-[var(--bg-surface)]"
+            >
               {/* Selected Signal Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[var(--border-subtle)]">
                 <div>
                   <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
                     Selected Signal Inspection
                   </span>
-                  <h4 className="text-lg font-bold text-[var(--text-primary)] mt-0.5">
+                  <h3 className="text-lg font-bold text-[var(--text-primary)] mt-0.5">
                     {selectedSignal.title}
-                  </h4>
+                  </h3>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant={selectedSignal.severity === 'Critical' ? 'signal' : 'neutral'}>
@@ -176,7 +185,7 @@ export default function ProductPreview() {
               {/* Synthesized Root Cause Box */}
               <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border-subtle)] space-y-2">
                 <div className="flex items-center gap-2 text-xs font-mono font-semibold text-[var(--accent-signal)] uppercase">
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>Synthesized Causal Thread</span>
                 </div>
                 <p className="text-xs sm:text-sm text-[var(--text-primary)] leading-relaxed">
@@ -196,7 +205,7 @@ export default function ProductPreview() {
                       className="p-2.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-base)] flex items-center justify-between text-xs"
                     >
                       <div className="flex items-center gap-2 truncate">
-                        <GitCommit className="w-3.5 h-3.5 text-[var(--text-secondary)] shrink-0" />
+                        <GitCommit className="w-3.5 h-3.5 text-[var(--text-secondary)] shrink-0" aria-hidden="true" />
                         <span className="font-medium text-[var(--text-primary)] truncate">
                           {node.label}
                         </span>

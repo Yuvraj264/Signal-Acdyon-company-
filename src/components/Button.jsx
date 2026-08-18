@@ -8,6 +8,7 @@ export default function Button({
   children,
   variant = 'primary', // 'primary' | 'accent' | 'secondary' | 'ghost'
   size = 'md', // 'sm' | 'md' | 'lg'
+  type = 'button',
   iconLeft: IconLeft,
   iconRight: IconRight,
   className = '',
@@ -32,6 +33,7 @@ export default function Button({
 
   return (
     <Component
+      type={Component === 'button' ? type : undefined}
       className={`${baseStyles} ${variantStyles[variant] || variantStyles.primary} ${sizeStyles[size] || sizeStyles.md} ${className}`}
       disabled={disabled}
       {...props}
