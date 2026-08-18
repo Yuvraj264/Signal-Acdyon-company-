@@ -3,11 +3,12 @@ import { motion } from 'framer-motion'
 import Container from '../../components/Container'
 import SectionHeading from '../../components/SectionHeading'
 import Card from '../../components/Card'
-import { Database, GitFork, CheckCircle2, ArrowRight } from 'lucide-react'
+import { Database, GitFork, CheckCircle2, ArrowDown } from 'lucide-react'
 
 /**
  * ProductWorkflow: Explains the conceptual 3-stage intelligence engine.
  * 01 COLLECT -> 02 CONNECT -> 03 ACT
+ * Responsive horizontal grid on desktop, interconnected vertical flow on mobile.
  */
 export default function ProductWorkflow() {
   const steps = [
@@ -48,58 +49,68 @@ export default function ProductWorkflow() {
           align="left"
         />
 
-        {/* 3-Stage Progression Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+        {/* 3-Stage Progression Grid / Vertical Stack */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-6 relative">
           {steps.map((step, idx) => {
             const Icon = step.icon
             return (
-              <motion.div
-                key={step.num}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.45, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                className="relative"
-              >
-                <Card className="h-full flex flex-col justify-between p-6 sm:p-7 space-y-6 hover:border-[var(--border-strong)] transition-all">
-                  <div className="space-y-4">
-                    {/* Top Row: Step Number & Icon */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-2xl sm:text-3xl font-mono font-bold text-[var(--accent-signal)]">
-                        {step.num}
-                      </span>
-                      <div className="p-2.5 rounded-lg bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)]">
-                        <Icon className="w-4 h-4" />
+              <React.Fragment key={step.num}>
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.45, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative"
+                >
+                  <Card className="h-full flex flex-col justify-between p-6 sm:p-7 space-y-6 hover:border-[var(--border-strong)] transition-all">
+                    <div className="space-y-4">
+                      {/* Top Row: Step Number & Icon */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-2xl sm:text-3xl font-mono font-bold text-[var(--accent-signal)]">
+                          {step.num}
+                        </span>
+                        <div className="p-2.5 rounded-lg bg-[var(--bg-subtle)] text-[var(--text-primary)] border border-[var(--border-subtle)]">
+                          <Icon className="w-4 h-4" />
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Step Title & Tagline */}
-                    <div>
-                      <h3 className="text-lg font-bold tracking-tight text-[var(--text-primary)]">
-                        {step.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm font-medium text-[var(--text-secondary)] mt-0.5">
-                        {step.tagline}
+                      {/* Step Title & Tagline */}
+                      <div>
+                        <h3 className="text-lg font-bold tracking-tight text-[var(--text-primary)]">
+                          {step.title}
+                        </h3>
+                        <p className="text-xs sm:text-sm font-medium text-[var(--text-secondary)] mt-0.5">
+                          {step.tagline}
+                        </p>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
+                        {step.desc}
                       </p>
                     </div>
 
-                    {/* Description */}
-                    <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
+                    {/* Bottom Highlight Tag */}
+                    <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between">
+                      <span className="text-[11px] font-mono text-[var(--text-muted)]">
+                        Stage output
+                      </span>
+                      <span className="text-[11px] font-mono font-semibold text-[var(--text-primary)] px-2 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)]">
+                        {step.highlight}
+                      </span>
+                    </div>
+                  </Card>
+                </motion.div>
 
-                  {/* Bottom Highlight Tag */}
-                  <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between">
-                    <span className="text-[11px] font-mono text-[var(--text-muted)]">
-                      Stage output
-                    </span>
-                    <span className="text-[11px] font-mono font-semibold text-[var(--text-primary)] px-2 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)]">
-                      {step.highlight}
-                    </span>
+                {/* Mobile-Only Vertical Connector Indicator */}
+                {idx < steps.length - 1 && (
+                  <div className="md:hidden flex justify-center py-0 -my-3">
+                    <div className="p-1 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-muted)] shadow-xs">
+                      <ArrowDown className="w-3.5 h-3.5" />
+                    </div>
                   </div>
-                </Card>
-              </motion.div>
+                )}
+              </React.Fragment>
             )
           })}
         </div>

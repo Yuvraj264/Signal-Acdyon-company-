@@ -317,7 +317,57 @@ flowchart TD
 ```mermaid
 flowchart LR
     A[Primary Product Motion: Signal Investigation] --> B[Supporting Motion: Scroll Reveals]
-    B --> C[Micro Interaction: Hover & Focus Transitions]
+### Phase 5 — Responsive Strategy
+- **Date:** 2026-08-18
+- **Responsive Philosophy:** Mobile viewports were treated as intentional, first-class editorial compositions rather than merely shrunk desktop layouts. On mobile, content transitions into a focused single-column narrative where the interactive product demo remains immediately accessible without excessive scrolling.
+- **Breakpoints System:**
+  - `sm: 640px` (Tablets & large phones)
+  - `md: 768px` (Tablets / split grids)
+  - `lg: 1024px` (Small desktop / side-by-side hero)
+  - `xl: 1280px` (Standard desktop)
+  - `2xl: 1536px` (Wide displays / 1440px target container)
+  - *Primary acceptance targets:* Exactly **390px** (iPhone standard) and **1440px** (Desktop).
+- **Mobile Composition Decisions:**
+  - *Hero Stacking:* Linear narrative on 390px (`Headline` → `Copy` → `CTA` → `Signal Demo`) with full-width tap targets and balanced line wraps.
+  - *Investigation Graph:* Adapted into a vertical hierarchical tree with continuous vertical hairline connector lines that fit comfortably inside narrow mobile viewports without text clipping.
+  - *Product Workflow:* Interconnected with mobile-only vertical connector arrows (`ArrowDown`) showing step sequence `01 COLLECT` → `02 CONNECT` → `03 ACT`.
+  - *Product Preview:* Stacks signals feed above the selected inspection panel with full-width tap areas.
+  - *Navigation:* Compact header with accessible drawer modal, preventing horizontal collision.
+- **Zero Horizontal Overflow Audit:**
+  - Audited all flex children, grid containers, and SVG line coordinates.
+  - Enforced intrinsic responsive constraints (fluid `w-full`, `max-w-xl`, `overflow-hidden` on cards, and responsive horizontal container padding `px-4 sm:px-6 lg:px-8`) with zero reliance on artificial `overflow-x: hidden` body hacks.
+- **Verification Across Breakpoints:**
+  - `390px`: Verified clean hierarchy, readable typography, and complete zero-overflow.
+  - `430px`: Verified generous margins and full touch-target usability.
+  - `768px`: Verified smooth transition from stacked to 3-column workflow grid.
+  - `1024px`: Verified side-by-side hero layout activation.
+  - `1280px`: Verified card elevation and spacing harmony.
+  - `1440px`: Verified maximum content bounds (`max-w-6xl`) with ample breathing room.
+- **Current Status:** Phase 5: COMPLETE. Ready for Phase 6 (Accessibility & Easter Egg).
+
+```mermaid
+flowchart TD
+    A[Desktop Layout] --> B{Viewport}
+    B -->|Large: 1440px| C[Two-Dimensional Composition]
+    B -->|Medium: 768px-1024px| D[Adaptive Responsive Grid]
+    B -->|Small: 390px| E[Single-Column Mobile Composition]
+
+    E --> F[Stack Content Linearly]
+    E --> G[Restructure Signal Graph Vertically]
+    E --> H[Interconnected Vertical Workflow]
+    E --> I[Accessible Mobile Drawer Menu]
+```
+
+```text
+Desktop
+  ↓
+Two-dimensional composition (Asymmetric value proposition + Interactive demo centerpiece)
+
+Mobile
+  ↓
+Single-column narrative (Headline → Copy → CTA → Product Demo → Workflow → Workspace)
+  ↓
+Tactile, readable interaction without horizontal overflow
 ```
 
 ---
@@ -344,12 +394,16 @@ flowchart LR
   - *AI Implemented:* Motion system calibration in `src/utils/motion.js`, button arrow nudges and active compression in `src/components/Button.jsx`, subtle radial grid background texture in `src/index.css`, and hero entrance orchestration in `src/sections/Hero/Hero.jsx`.
   - *Manually Reviewed & Tuned:* Verified easing curve uniformity `[0.16, 1, 0.3, 1]` across all section transitions, checked reduced-motion fallbacks, and ensured zero animation stutter on viewport resizes.
   - *Tested:* Production build bundle compilation and state stability.
+- **Phase 5:**
+  - *AI Implemented:* Mobile vertical connector indicators in `ProductWorkflow.jsx`, fluid touch targets across all interactive buttons, responsive tree restructuring in `InvestigationGraph.jsx`, and multi-breakpoint layout tuning.
+  - *Manually Reviewed & Tuned:* Conducted strict overflow audits across 390px, 430px, 768px, 1024px, 1280px, and 1440px viewports; verified mobile tap targets (min 44px) and drawer ergonomics.
+  - *Tested:* Production build bundle validation and responsive CSS property verification.
 
 ---
 
 ## 10. Known Issues
 
-*None.* All animations, micro-interactions, responsive layouts, and builds are stable with zero warnings or errors.
+*None.* Layouts at 390px mobile, 1440px desktop, and all intermediate breakpoints are fully responsive with zero horizontal overflow.
 
 ---
 
@@ -358,6 +412,7 @@ flowchart LR
 - Sound design / haptic audio feedback on signal investigation resolution (optional subtle click).
 - Keyboard navigation shortcuts (e.g., `Space` / `Enter` to step through investigation stages).
 - Interactive timeline scrubber to inspect signals over arbitrary time windows.
+
 
 
 
