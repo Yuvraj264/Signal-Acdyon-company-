@@ -1,9 +1,10 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import Container from '../../components/Container'
 import Button from '../../components/Button'
 import Badge from '../../components/Badge'
 import SignalDemo from '../../components/SignalDemo/SignalDemo'
-import { ArrowRight, ArrowDown, Shield, Zap, Search } from 'lucide-react'
+import { ArrowRight, ArrowDown } from 'lucide-react'
 
 /**
  * Hero Section for SIGNAL.
@@ -14,7 +15,6 @@ export default function Hero({ onInvestigateClick }) {
     const demoElement = document.getElementById('hero-signal-demo')
     if (demoElement) {
       demoElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      // Find the investigate button inside the demo and click it
       const button = demoElement.querySelector('button')
       if (button) {
         button.click()
@@ -29,27 +29,46 @@ export default function Hero({ onInvestigateClick }) {
           {/* Left Column: Value Proposition & Copy */}
           <div className="lg:col-span-6 space-y-8 text-left">
             {/* Eyebrow Tag */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            >
               <Badge variant="signal" isMono={true}>
                 BUSINESS INTELLIGENCE, WITHOUT THE NOISE.
               </Badge>
-            </div>
+            </motion.div>
 
             {/* Main Headline */}
-            <div className="space-y-2">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-2"
+            >
               <h1 className="text-4xl sm:text-6xl lg:text-[62px] font-bold tracking-tight text-[var(--text-primary)] leading-[1.04] text-balance-editorial">
                 SEE WHAT CHANGED.<br />
                 <span className="text-[var(--text-secondary)] font-medium">KNOW WHAT MATTERS.</span>
               </h1>
-            </div>
+            </motion.div>
 
             {/* Supporting Copy */}
-            <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-xl leading-relaxed text-balance-editorial">
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              className="text-base sm:text-lg text-[var(--text-secondary)] max-w-xl leading-relaxed text-balance-editorial"
+            >
               Signal turns scattered business activity into the few changes worth your attention. We correlate anomalies, traces, and releases into clear, prioritized threads.
-            </p>
+            </motion.p>
 
             {/* Hero CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
+            >
               <Button
                 variant="primary"
                 size="lg"
@@ -67,13 +86,18 @@ export default function Hero({ onInvestigateClick }) {
                 <span>How it works</span>
                 <ArrowDown className="w-4 h-4 text-[var(--text-muted)]" />
               </a>
-            </div>
+            </motion.div>
 
             {/* Subtle Value Badges / Pillars */}
-            <div className="pt-6 border-t border-[var(--border-subtle)] grid grid-cols-3 gap-4 text-xs font-mono text-[var(--text-secondary)]">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+              className="pt-6 border-t border-[var(--border-subtle)] grid grid-cols-3 gap-4 text-xs font-mono text-[var(--text-secondary)]"
+            >
               <div>
                 <div className="text-[var(--text-primary)] font-semibold">01 · Normalization</div>
-                <div className="text-[var(--text-muted)] text-[11px]">Unifies 14+ event streams</div>
+                <div className="text-[var(--text-muted)] text-[11px]">Unifies 14+ streams</div>
               </div>
               <div>
                 <div className="text-[var(--text-primary)] font-semibold">02 · Correlation</div>
@@ -81,15 +105,20 @@ export default function Hero({ onInvestigateClick }) {
               </div>
               <div>
                 <div className="text-[var(--text-primary)] font-semibold">03 · Synthesis</div>
-                <div className="text-[var(--text-muted)] text-[11px]">Human-actionable root cause</div>
+                <div className="text-[var(--text-muted)] text-[11px]">Actionable root cause</div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column: Interactive Product Demo Centerpiece */}
-          <div className="lg:col-span-6 flex justify-center w-full">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98, y: 14 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-6 flex justify-center w-full"
+          >
             <SignalDemo id="hero-signal-demo" />
-          </div>
+          </motion.div>
         </div>
       </Container>
     </section>

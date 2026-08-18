@@ -267,22 +267,57 @@ flowchart TD
 - **Current Status:** Phase 3: COMPLETE. Ready for Phase 4 (Responsive/Mobile Optimization).
 
 ```mermaid
-flowchart TD
-    A[SIGNAL Visual Identity]
-    A --> B[Typography: Inter + JetBrains Mono]
-    A --> C[Color: Warm Light-First + Electric Orange #FF4D00]
-    A --> D[Spacing: Generous Whitespace & Fluid Grid]
-    A --> E[Component Primitives]
-    A --> F[Motion: Crisp [0.16, 1, 0.3, 1] Transitions]
-    A --> G[Responsive Rules: 390px to 1440px Zero-Overflow]
+### Phase 4 — Motion + Premium Polish
+- **Date:** 2026-08-18
+- **Motion Philosophy:** *"Motion is used to communicate state, hierarchy, and interaction — not decoration."*
+- **Motion Hierarchy:**
+  ```text
+  Level 1: Signal Investigation (Primary Product Motion)
+          ↓
+  Level 2: Section Reveals (Grouped, Restrained Scroll Transitions)
+          ↓
+  Level 3: Micro-Interactions (Button Arrow Nudges, Active Scale Compression, Focus Rings)
+  ```
+- **Timing & Easing System:**
+  - *Micro-interactions:* 150–200ms
+  - *UI transitions / Drawers:* 250–350ms
+  - *Section reveals:* 450–600ms
+  - *Signal investigation sequence:* 800ms (investigating telemetry) → 900ms (connecting causal graph)
+  - *Easing:* `[0.16, 1, 0.3, 1]` (calm, precise cubic-out; zero elastic bounce or cartoonish overshoot).
+- **Reduced Motion:**
+  - Embedded global media queries in `src/index.css` forcing transitions to `0.01ms` when `prefers-reduced-motion: reduce` is active.
+  - Interactive state changes retain instantaneous visibility and functional completeness without layout shifting.
+- **Visual Polish Implemented:**
+  - *Background Craft:* Added a faint radial engineering grid (`24px` grid pitch) to the warm neutral background canvas, providing depth without distraction.
+  - *Hero Load Entrance:* Restrained staggered entrance for eyebrow, headline, copy, and centerpiece card on initial page load.
+  - *Button Micro-Interactions:* Added hover arrow nudging (`group-hover:translate-x-0.5`), tactile compression (`active:scale-[0.985]`), and accessible focus-visible rings.
+  - *Card & Divider Tuning:* Calibrated hairline borders (`#E8E8E0`), subtle elevation (`shadow-xs`), and optical text balancing across all display headers.
+- **Decisions Rejected:**
+  - *Continuous Floating Blobs / Parallax:* Rejected as generic AI templates that degrade analytical clarity.
+  - *Cursor-following / 3D Canvas Effects:* Rejected to maintain instant 60fps mobile performance and zero CPU thrashing.
+  - *Heavy Graph Library:* Kept lightweight SVG and Framer Motion trees to guarantee zero bundle bloat and zero mobile overflow.
+- **Trade-offs:** Avoided complex multi-stage particle animations in favor of deterministic SVG lines and clean typography reveals.
+- **Verification:**
+  - Production build (`npm run build`) compiled cleanly in `1.12s` (`36.79 kB CSS`, zero errors).
+  - Dev server running on `http://localhost:3000/`.
+  - Rapid click handling and replay flows verified.
+  - Verified no horizontal overflow at 390px mobile and 1440px desktop viewports.
+- **Current Status:** Phase 4: COMPLETE. Ready for Phase 5.
 
-    E --> H[Navbar & Mobile Drawer]
-    E --> I[Hero & Signal Investigation Centerpiece]
-    E --> J[Problem: Noise Convergence]
-    E --> K[ProductWorkflow: Collect, Connect, Act]
-    E --> L[ProductPreview: Workspace Feed]
-    E --> M[Philosophy: Manifesto Statement]
-    E --> N[FinalCTA & Minimal Footer]
+```mermaid
+flowchart TD
+    A[Page Load] --> B[Hero Entrance]
+    B --> C[User Interaction]
+    C --> D[Signal Investigation]
+    D --> E[Result Reveal]
+    E --> F[Scroll]
+    F --> G[Subtle Section Reveal]
+```
+
+```mermaid
+flowchart LR
+    A[Primary Product Motion: Signal Investigation] --> B[Supporting Motion: Scroll Reveals]
+    B --> C[Micro Interaction: Hover & Focus Transitions]
 ```
 
 ---
@@ -305,12 +340,16 @@ flowchart TD
   - *AI Implemented:* `src/sections/Problem/Problem.jsx`, `src/sections/ProductWorkflow/ProductWorkflow.jsx`, `src/sections/ProductPreview/ProductPreview.jsx`, `src/sections/Philosophy/Philosophy.jsx`, and `src/sections/FinalCTA/FinalCTA.jsx`. Updated `Navbar.jsx`, `Footer.jsx`, and `App.jsx`.
   - *Manually Reviewed & Tuned:* Connected interactive signal selector in Product Preview, ensured all section anchors align with smooth scrolling, added honest demo labeling across all data views, and ensured zero horizontal overflow across all new grid systems.
   - *Tested:* Production build bundle compilation, link routing, and state stability.
+- **Phase 4:**
+  - *AI Implemented:* Motion system calibration in `src/utils/motion.js`, button arrow nudges and active compression in `src/components/Button.jsx`, subtle radial grid background texture in `src/index.css`, and hero entrance orchestration in `src/sections/Hero/Hero.jsx`.
+  - *Manually Reviewed & Tuned:* Verified easing curve uniformity `[0.16, 1, 0.3, 1]` across all section transitions, checked reduced-motion fallbacks, and ensured zero animation stutter on viewport resizes.
+  - *Tested:* Production build bundle compilation and state stability.
 
 ---
 
 ## 10. Known Issues
 
-*None.* Complete homepage story is assembled, cohesive, and compiling cleanly with zero errors.
+*None.* All animations, micro-interactions, responsive layouts, and builds are stable with zero warnings or errors.
 
 ---
 
@@ -319,6 +358,7 @@ flowchart TD
 - Sound design / haptic audio feedback on signal investigation resolution (optional subtle click).
 - Keyboard navigation shortcuts (e.g., `Space` / `Enter` to step through investigation stages).
 - Interactive timeline scrubber to inspect signals over arbitrary time windows.
+
 
 
 

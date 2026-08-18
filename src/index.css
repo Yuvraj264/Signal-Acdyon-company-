@@ -65,10 +65,13 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
 
   body {
     background-color: var(--bg-base);
+    background-image: radial-gradient(#E8E8E0 1px, transparent 1px);
+    background-size: 24px 24px;
     color: var(--text-primary);
     font-family: var(--font-sans);
     letter-spacing: -0.011em;

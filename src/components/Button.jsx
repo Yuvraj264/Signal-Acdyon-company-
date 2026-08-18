@@ -15,7 +15,7 @@ export default function Button({
   as: Component = 'button',
   ...props
 }) {
-  const baseStyles = 'inline-flex items-center justify-center font-medium tracking-tight transition-all duration-150 select-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-signal)]'
+  const baseStyles = 'group inline-flex items-center justify-center font-medium tracking-tight transition-all duration-150 select-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.985] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-signal)]'
 
   const variantStyles = {
     primary: 'bg-[var(--text-primary)] text-white hover:bg-[#2A2A28] active:bg-[#000000] border border-transparent shadow-xs',
@@ -36,9 +36,13 @@ export default function Button({
       disabled={disabled}
       {...props}
     >
-      {IconLeft && <IconLeft className={size === 'sm' ? 'w-3.5 h-3.5' : size === 'lg' ? 'w-5 h-5' : 'w-4 h-4'} />}
+      {IconLeft && (
+        <IconLeft className={`transition-transform duration-150 group-hover:-translate-x-0.5 ${size === 'sm' ? 'w-3.5 h-3.5' : size === 'lg' ? 'w-5 h-5' : 'w-4 h-4'}`} />
+      )}
       <span>{children}</span>
-      {IconRight && <IconRight className={size === 'sm' ? 'w-3.5 h-3.5' : size === 'lg' ? 'w-5 h-5' : 'w-4 h-4'} />}
+      {IconRight && (
+        <IconRight className={`transition-transform duration-150 group-hover:translate-x-0.5 ${size === 'sm' ? 'w-3.5 h-3.5' : size === 'lg' ? 'w-5 h-5' : 'w-4 h-4'}`} />
+      )}
     </Component>
   )
 }
