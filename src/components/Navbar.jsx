@@ -4,11 +4,16 @@ import Button from './Button'
 import { ArrowRight, Menu, X } from 'lucide-react'
 
 /**
- * Responsive Navigation Bar Foundation for SIGNAL.
+ * Responsive Navigation Bar for SIGNAL.
  * Minimalist editorial design, clean desktop & mobile hierarchy, zero overflow.
  */
 export default function Navbar({ onCtaClick }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const handleNavCta = () => {
+    setMobileMenuOpen(false)
+    if (onCtaClick) onCtaClick()
+  }
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[var(--border-subtle)] bg-[var(--bg-base)]/90 backdrop-blur-md transition-all">
@@ -25,18 +30,24 @@ export default function Navbar({ onCtaClick }) {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[var(--text-secondary)]">
+          <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-[var(--text-secondary)]">
             <a 
-              href="#product" 
+              href="#problem" 
               className="hover:text-[var(--text-primary)] transition-colors focus-visible:rounded-sm"
             >
-              Product
+              Problem
             </a>
             <a 
               href="#how-it-works" 
               className="hover:text-[var(--text-primary)] transition-colors focus-visible:rounded-sm"
             >
               How it works
+            </a>
+            <a 
+              href="#workspace" 
+              className="hover:text-[var(--text-primary)] transition-colors focus-visible:rounded-sm"
+            >
+              Workspace
             </a>
             <a 
               href="#philosophy" 
@@ -52,7 +63,8 @@ export default function Navbar({ onCtaClick }) {
               variant="primary"
               size="sm"
               iconRight={ArrowRight}
-              onClick={onCtaClick}
+              onClick={handleNavCta}
+              className="cursor-pointer"
             >
               Investigate a signal
             </Button>
@@ -63,7 +75,7 @@ export default function Navbar({ onCtaClick }) {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--accent-signal)]"
+              className="p-2 rounded-md text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)] focus-visible:ring-2 focus-visible:ring-[var(--accent-signal)] cursor-pointer"
               aria-expanded={mobileMenuOpen}
               aria-label="Toggle navigation menu"
             >
@@ -77,11 +89,11 @@ export default function Navbar({ onCtaClick }) {
           <div className="sm:hidden border-t border-[var(--border-subtle)] py-4 space-y-3">
             <nav className="flex flex-col space-y-2 text-sm font-medium text-[var(--text-secondary)]">
               <a
-                href="#product"
+                href="#problem"
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-2 py-1.5 rounded-md hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
               >
-                Product
+                Problem
               </a>
               <a
                 href="#how-it-works"
@@ -89,6 +101,13 @@ export default function Navbar({ onCtaClick }) {
                 className="px-2 py-1.5 rounded-md hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
               >
                 How it works
+              </a>
+              <a
+                href="#workspace"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-2 py-1.5 rounded-md hover:text-[var(--text-primary)] hover:bg-[var(--bg-subtle)]"
+              >
+                Workspace
               </a>
               <a
                 href="#philosophy"
@@ -102,12 +121,9 @@ export default function Navbar({ onCtaClick }) {
               <Button
                 variant="primary"
                 size="md"
-                className="w-full"
+                className="w-full cursor-pointer"
                 iconRight={ArrowRight}
-                onClick={() => {
-                  setMobileMenuOpen(false)
-                  if (onCtaClick) onCtaClick()
-                }}
+                onClick={handleNavCta}
               >
                 Investigate a signal
               </Button>

@@ -216,6 +216,56 @@ flowchart LR
   - Zero console errors and clean layout at 390px and 1440px.
 - **Current Status:** Phase 2: COMPLETE. Ready for Phase 3.
 
+### Phase 3 — Complete Homepage Story
+- **Date:** 2026-08-18
+- **Information Architecture:**
+  The complete homepage tells one unified, editorial narrative:
+  1. **Navbar:** Minimal brand wordmark with section anchor navigation and direct CTA.
+  2. **Hero + Signal Investigation:** First 3 seconds communicate the value proposition with immediate tactile interaction.
+  3. **Problem (`YOUR BUSINESS IS LOUD.`):** Visualizes the pain of fragmented operational noise (dashboards, spreadsheets, alerts) converging into a single prioritized signal thread.
+  4. **Product Workflow (`01 COLLECT → 02 CONNECT → 03 ACT`):** Explains the 3 conceptual stages of normalization, causal graph correlation, and decisive action.
+  5. **Product Preview (`Operator Workspace`):** Illustrates the broader multi-signal workspace feed (`EXAMPLE WORKSPACE · DEMO DATA`) with an interactive signal selector.
+  6. **Philosophy (`THE GOAL ISN'T MORE INFORMATION. IT'S BETTER ATTENTION.`):** High-impact editorial manifesto with generous whitespace.
+  7. **Final CTA (`DON'T MONITOR EVERYTHING. NOTICE WHAT MATTERS.`):** Confident closing conversion trigger scrolling back to the interactive demo.
+  8. **Footer:** Honest prototype disclosures and clean sitemap links.
+
+```mermaid
+flowchart TD
+    A[Hero: Immediate Tactile Investigation] --> B[Problem: Operational Noise Dilemma]
+    B --> C[Workflow Stage 01: Collect & Normalize]
+    C --> D[Workflow Stage 02: Connect & Trace Graph]
+    D --> E[Workflow Stage 03: Act on Synthesized Root Cause]
+    E --> F[Product Preview: Multi-Signal Workspace Feed]
+    F --> G[Philosophy: The Goal Isn't More Information]
+    G --> H[Final CTA: Notice What Matters]
+    H --> I[Footer: Honest Disclosures & Prototype Attribution]
+```
+
+- **Storytelling Decisions:** Every section reinforces the single product thesis: modern teams do not need more dashboards; they need intelligent causal synthesis.
+- **Product Preview Decision:** Created an illustrative example workspace feed instead of a bloated generic analytics dashboard. This allows visitors to click between signals (Checkout failures, API latency surge, Support volume) and preview correlated nodes instantly without backend complexity.
+- **Content Honesty:**
+  - Zero fake customer logos or fabricated testimonials.
+  - Zero fake user counts or false claims.
+  - All workspace feeds explicitly labeled: `EXAMPLE WORKSPACE · DEMO DATA`.
+  - All workflow capabilities framed accurately as conceptual architecture.
+- **Sections Considered & Rejected:**
+  - *Pricing Cards:* Rejected because SIGNAL is an early-stage prototype; fake tier pricing creates artificial clutter.
+  - *Testimonial Carousel:* Rejected as deceptive marketing.
+  - *Customer Logo Ribbon:* Rejected because fabricated logos destroy credibility for technical hiring evaluations.
+  - *FAQ Accordion:* Rejected to maintain a tight, confident, linear narrative.
+- **Motion Decisions:**
+  - Restrained scroll reveals via Framer Motion: `opacity: 0, y: 16` to `opacity: 1, y: 0` with `450–600ms` duration and `[0.16, 1, 0.3, 1]` easing.
+  - `prefers-reduced-motion` strictly honored.
+- **Responsive Decisions:**
+  - Desktop: Multi-column asymmetric grids with generous whitespace.
+  - Mobile: Clean single-column vertical flows with full-width action targets and zero horizontal scroll.
+- **Verification:**
+  - Production build (`npm run build`) succeeded in `1.15s` with zero errors or warnings.
+  - Dev server running on `http://localhost:3000/`.
+  - Section anchors (`#problem`, `#how-it-works`, `#workspace`, `#philosophy`) tested and aligned.
+  - Investigation trigger shared seamlessly between Navbar, Hero, and Final CTA.
+- **Current Status:** Phase 3: COMPLETE. Ready for Phase 4 (Responsive/Mobile Optimization).
+
 ```mermaid
 flowchart TD
     A[SIGNAL Visual Identity]
@@ -227,12 +277,12 @@ flowchart TD
     A --> G[Responsive Rules: 390px to 1440px Zero-Overflow]
 
     E --> H[Navbar & Mobile Drawer]
-    E --> I[Buttons: Primary, Accent, Secondary, Ghost]
-    E --> J[Cards: Restrained Borders & Subtle Elevation]
-    E --> K[Badges: Pulsing Signal & Status Tags]
-    E --> L[SectionHeading & Container]
-    E --> M[Footer: Minimal & Honest Disclosures]
-    E --> N[SignalDemo & InvestigationGraph]
+    E --> I[Hero & Signal Investigation Centerpiece]
+    E --> J[Problem: Noise Convergence]
+    E --> K[ProductWorkflow: Collect, Connect, Act]
+    E --> L[ProductPreview: Workspace Feed]
+    E --> M[Philosophy: Manifesto Statement]
+    E --> N[FinalCTA & Minimal Footer]
 ```
 
 ---
@@ -251,12 +301,16 @@ flowchart TD
   - *AI Implemented:* `src/sections/Hero/Hero.jsx`, `src/components/SignalDemo/SignalDemo.jsx`, and `src/components/SignalDemo/InvestigationGraph.jsx` with full 4-state investigation flow, SVG connector branches, synthesis cards, and telemetry log drawer.
   - *Manually Reviewed & Tuned:* Configured timeout cleanup with `useRef`, debounced rapid clicks during scanning, and calibrated responsive vertical tree layout for mobile viewports.
   - *Tested:* Production build validation, state transitions (idle → investigating → connecting → revealed → replay), and evidence panel drawer.
+- **Phase 3:**
+  - *AI Implemented:* `src/sections/Problem/Problem.jsx`, `src/sections/ProductWorkflow/ProductWorkflow.jsx`, `src/sections/ProductPreview/ProductPreview.jsx`, `src/sections/Philosophy/Philosophy.jsx`, and `src/sections/FinalCTA/FinalCTA.jsx`. Updated `Navbar.jsx`, `Footer.jsx`, and `App.jsx`.
+  - *Manually Reviewed & Tuned:* Connected interactive signal selector in Product Preview, ensured all section anchors align with smooth scrolling, added honest demo labeling across all data views, and ensured zero horizontal overflow across all new grid systems.
+  - *Tested:* Production build bundle compilation, link routing, and state stability.
 
 ---
 
 ## 10. Known Issues
 
-*None.* Hero section and interactive Signal investigation flow are verified and stable.
+*None.* Complete homepage story is assembled, cohesive, and compiling cleanly with zero errors.
 
 ---
 
@@ -265,5 +319,6 @@ flowchart TD
 - Sound design / haptic audio feedback on signal investigation resolution (optional subtle click).
 - Keyboard navigation shortcuts (e.g., `Space` / `Enter` to step through investigation stages).
 - Interactive timeline scrubber to inspect signals over arbitrary time windows.
+
 
 
