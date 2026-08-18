@@ -137,28 +137,72 @@ flowchart TD
 - **Why Rejected:** Next.js introduces unnecessary server complexity, SSR configuration, and deployment overhead for what is strictly an interactive frontend showcase. Plain Vanilla JS lacks declarative state transitions needed for the step-by-step investigation animation.
 - **Trade-off:** Client-side only rendering, perfectly matched to the static Vercel deployment requirement.
 - **Verification:** Verified package.json dependencies, Vite configuration, index.html font loading, Tailwind CSS v4 styling rules, and clean startup.
-- **Current Status:** Completed. Ready for Phase 1.
+- **Current Status:** Completed.
+
+### Phase 1 — Design Foundation
+- **Date:** 2026-08-18
+- **Decision:** Established a light-first editorial design foundation, centralized design tokens (`--bg-base: #FAFAF8`, `--text-primary: #121211`, `--accent-signal: #FF4D00`), typography hierarchy (`Inter` + `JetBrains Mono`), reusable component primitives (`Container`, `Button`, `Badge`, `Card`, `SectionHeading`, `Navbar`, `Footer`), and motion presets in `src/utils/motion.js`.
+- **Why:** SIGNAL requires a calm, authoritative, and technical aesthetic. Relying on warm editorial neutrals and an electric signal orange accent creates an immediate perception of high engineering craft without relying on generic SaaS tropes.
+- **Alternatives Considered & Rejected:**
+  1. *Dark-first UI / Toggle:* Rejected because the assignment explicitly mandates that dark mode must only be built if fully supported across the entire product. A disciplined light-first editorial system is more distinctive and reliable.
+  2. *Purple/Indigo AI Gradients & Glassmorphism:* Rejected as generic AI cliches that degrade trust for serious data intelligence tools.
+  3. *Card-heavy Dashboard Grid:* Rejected in favor of generous whitespace and typography-led layouts where elements sit directly on the canvas.
+- **Design System Overview:**
+  - **Colors:** Warm light base (`#FAFAF8`), subtle surface (`#F4F4EE`), crisp card surface (`#FFFFFF`), primary text (`#121211`), secondary muted text (`#5C5C56`), electric accent (`#FF4D00`).
+  - **Typography:** Inter (Display & Headings: `-0.02em` tracking, tight leading; Body: `text-sm`/`text-base`) paired with JetBrains Mono for telemetry, metrics, and causality codes.
+  - **Spacing & Containers:** Centered layout (`max-w-5xl`, `max-w-6xl`) with responsive padding (`px-4 sm:px-6 lg:px-8`) ensuring no horizontal overflow on viewports down to 390px.
+  - **Cards & Borders:** Hairline borders (`#E8E8E0`), subtle elevation (`shadow-xs`), controlled radius (`rounded-lg`), subtle interactive hover states.
+  - **Buttons:** High-contrast `primary` (solid near-black `#121211`), `accent` (electric `#FF4D00`), `secondary` (bordered), and `ghost` with accessible `:focus-visible` rings.
+  - **Navbar:** Sticky header with SIGNAL logomark, responsive mobile drawer toggle, desktop nav links, and primary CTA.
+  - **Footer:** Minimalist structural footer with demo disclaimer and attribution.
+- **Motion Principles:**
+  - Easing: `[0.16, 1, 0.3, 1]` (cubic-out for crisp editorial snappiness).
+  - Durations: `100ms` (instant), `200ms` (micro-interactions), `350ms` (component transitions).
+  - `prefers-reduced-motion` strictly honored via global CSS and Framer Motion conventions.
+- **Trade-offs:** Intentionally deferred complex interactive animations and full hero composition to subsequent dedicated phases to ensure rock-solid foundational stability.
+- **Verification:**
+  - Dev server running smoothly on `http://localhost:3000/`.
+  - Production build (`npm run build`) passed with zero errors/warnings in 832ms.
+  - Console checked: Zero errors and zero warnings.
+  - Browser subagent verification: Tested at 1440px desktop width and 390px/500px mobile widths. Mobile drawer opens/closes cleanly, button hover states work, no horizontal scrollbars exist.
+- **Current Status:** Phase 1: COMPLETE. Ready for Phase 2.
+
+```mermaid
+flowchart TD
+    A[SIGNAL Visual Identity]
+    A --> B[Typography: Inter + JetBrains Mono]
+    A --> C[Color: Warm Light-First + Electric Orange #FF4D00]
+    A --> D[Spacing: Generous Whitespace & Fluid Grid]
+    A --> E[Component Primitives]
+    A --> F[Motion: Crisp [0.16, 1, 0.3, 1] Transitions]
+    A --> G[Responsive Rules: 390px to 1440px Zero-Overflow]
+
+    E --> H[Navbar & Mobile Drawer]
+    E --> I[Buttons: Primary, Accent, Secondary, Ghost]
+    E --> J[Cards: Restrained Borders & Subtle Elevation]
+    E --> K[Badges: Pulsing Signal & Status Tags]
+    E --> L[SectionHeading & Container]
+    E --> M[Footer: Minimal & Honest Disclosures]
+```
 
 ---
 
 ## 9. AI Usage
 
-- **AI Generated:**
-  - Initial scaffolding for `package.json`, `vite.config.js`, `index.html`, and `src/index.css`.
-  - Comprehensive documentation structure in `DECISIONS.md` and `README.md`.
-  - Initial `App.jsx` layout verification component.
-- **Manually Reviewed & Tuned:**
-  - Custom color token variables (`--bg-base`, `--accent-signal`, `--text-primary`) calibrated for warm editorial contrast.
-  - Verification of Tailwind v4 Vite plugin integration.
-  - Precision alignment of requirements (no fake testimonials, no generic AI gradients, clean mobile constraints).
-- **Tested:**
-  - Development build command, package installation integrity, and local server startup without console warnings.
+- **Phase 0:**
+  - *AI Generated:* Scaffolding for `package.json`, `vite.config.js`, `index.html`, `src/index.css`, `DECISIONS.md`, and `README.md`.
+  - *Manually Reviewed & Tuned:* Warm off-white color tokens and Vite Tailwind v4 integration.
+  - *Tested:* Initial build and dev server launch.
+- **Phase 1:**
+  - *AI Implemented:* Centralized Tailwind v4 theme tokens in `src/index.css`, motion presets in `src/utils/motion.js`, component primitives (`Container.jsx`, `Button.jsx`, `Badge.jsx`, `Card.jsx`, `SectionHeading.jsx`, `Navbar.jsx`, `Footer.jsx`), and the Phase 1 Design Foundation showcase in `App.jsx`.
+  - *Manually Reviewed & Tuned:* Removed `overflow-x: hidden` to guarantee authentic structural zero-overflow; verified focus-visible styling for accessibility; adjusted mobile drawer toggle mechanics.
+  - *Tested:* Automated browser subagent visual inspection at 1440px and mobile widths, hover states, console logs, and Vite production bundle compilation.
 
 ---
 
 ## 10. Known Issues
 
-*None currently.* Project is in initial foundation stage.
+*None.* All foundation components and layout constraints verified cleanly.
 
 ---
 
@@ -167,3 +211,4 @@ flowchart TD
 - Sound design / haptic audio feedback on signal investigation resolution (optional subtle click).
 - Keyboard navigation shortcuts (e.g., `Space` / `Enter` to step through investigation stages).
 - Interactive timeline scrubber to inspect signals over arbitrary time windows.
+
