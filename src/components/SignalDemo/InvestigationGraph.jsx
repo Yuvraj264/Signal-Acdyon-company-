@@ -1,76 +1,86 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { AlertCircle, GitCommit, Smartphone, CreditCard, CheckCircle2, ChevronRight } from 'lucide-react'
+import {
+  AlertCircle,
+  GitCommit,
+  Smartphone,
+  CreditCard,
+  Database,
+  Cpu,
+  Activity,
+  ShieldAlert,
+  KeyRound,
+  LifeBuoy,
+  ServerCrash,
+  Globe,
+  ChevronRight,
+} from 'lucide-react'
 import Badge from '../Badge'
 
+const ICON_MAP = {
+  GitCommit,
+  Smartphone,
+  CreditCard,
+  Database,
+  Cpu,
+  Activity,
+  ShieldAlert,
+  KeyRound,
+  LifeBuoy,
+  ServerCrash,
+  Globe,
+}
+
 /**
- * Responsive relationship graph for Signal investigation.
- * Adapts between structured desktop branching and a clean mobile tree hierarchy.
+ * Data-Driven Relationship Graph for Signal investigation.
+ * Renders nodes, branch connectors, and root cause synthesis dynamically from the active incident.
  */
-export default function InvestigationGraph({ state, onEvidenceClick }) {
+export default function InvestigationGraph({ incident, state, onEvidenceClick }) {
+  if (!incident) return null
+
   const isConnectingOrRevealed = state === 'connecting' || state === 'revealed'
   const isRevealed = state === 'revealed'
-
-  const events = [
-    {
-      id: 'release',
-      title: 'Release 2.4.1',
-      type: 'Deployment',
-      desc: 'Merged by @core-team at 14:02 UTC',
-      icon: GitCommit,
-      tag: 'Root trigger',
-      tagVariant: 'signal',
-      highlight: true,
-      delay: 0.1,
-    },
-    {
-      id: 'payment',
-      title: 'Payment form',
-      type: 'Component',
-      desc: 'Form validation runtime exception on iOS Safari',
-      icon: CreditCard,
-      tag: 'Failing module',
-      tagVariant: 'warning',
-      highlight: false,
-      delay: 0.25,
-    },
-    {
-      id: 'traffic',
-      title: 'Mobile traffic',
-      type: 'Telemetry',
-      desc: 'Spike in mobile checkout attempts (+42%)',
-      icon: Smartphone,
-      tag: 'Amplifier',
-      tagVariant: 'neutral',
-      highlight: false,
-      delay: 0.4,
-    },
-  ]
+  const isIdle = state === 'idle'
 
   return (
     <div className="space-y-4">
       {/* Root Node: The Primary Signal */}
-      <div className="p-4 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-subtle)] shadow-xs">
+      <div
+        className={`p-4 rounded-lg bg-[var(--bg-surface)] border transition-all ${
+          isIdle
+            ? 'border-[var(--accent-signal-border)]/60 shadow-xs'
+            : 'border-[var(--border-subtle)] shadow-xs'
+        }`}
+      >
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-md bg-[var(--accent-signal-subtle)] text-[var(--accent-signal)] border border-[var(--accent-signal-border)]">
+            <div className="relative p-2 rounded-md bg-[var(--accent-signal-subtle)] text-[var(--accent-signal)] border border-[var(--accent-signal-border)]">
               <AlertCircle className="w-4 h-4" />
+              {isIdle && (
+                <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-signal)] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent-signal)]" />
+                </span>
+              )}
             </div>
             <div>
-              <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wide">
-                Primary Signal
+              <div className="text-xs font-mono text-[var(--text-muted)] uppercase tracking-wide flex items-center gap-1.5">
+                <span>Primary Signal</span>
+                {isIdle && (
+                  <span className="text-[10px] text-[var(--accent-signal)] font-semibold">· Ready to trace</span>
+                )}
               </div>
               <div className="text-base font-bold text-[var(--text-primary)] tracking-tight">
-                Checkout failures
+                {incident.title}
               </div>
             </div>
           </div>
           <div className="text-right">
             <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-semibold bg-[var(--accent-signal-subtle)] text-[var(--accent-signal)] border border-[var(--accent-signal-border)]">
-              ↑ 18.2%
+              {incident.change}
             </span>
             <div className="text-[11px] text-[var(--text-muted)] font-mono mt-0.5">
-              3 linked events
+              {incident.nodes.length} linked events
             </div>
           </div>
         </div>
@@ -87,8 +97,8 @@ export default function InvestigationGraph({ state, onEvidenceClick }) {
             className="absolute left-1.5 sm:left-2.5 top-0 bottom-3 w-px bg-[var(--border-strong)] origin-top"
           />
 
-          {events.map((item, idx) => {
-            const Icon = item.icon
+          {incident.nodes.map((item) => {
+            const Icon = ICON_MAP[item.iconName] || Activity
             return (
               <motion.div
                 key={item.id}
@@ -114,11 +124,13 @@ export default function InvestigationGraph({ state, onEvidenceClick }) {
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <div className={`p-1.5 rounded ${
-                        item.highlight && isRevealed
-                          ? 'bg-[var(--accent-signal-subtle)] text-[var(--accent-signal)]'
-                          : 'bg-[var(--bg-subtle)] text-[var(--text-secondary)]'
-                      }`}>
+                      <div
+                        className={`p-1.5 rounded ${
+                          item.highlight && isRevealed
+                            ? 'bg-[var(--accent-signal-subtle)] text-[var(--accent-signal)]'
+                            : 'bg-[var(--bg-subtle)] text-[var(--text-secondary)]'
+                        }`}
+                      >
                         <Icon className="w-3.5 h-3.5" />
                       </div>
                       <div>
@@ -167,12 +179,12 @@ export default function InvestigationGraph({ state, onEvidenceClick }) {
               </span>
             </div>
             <span className="text-[11px] font-mono text-zinc-400">
-              Confidence: 96.4%
+              Confidence: {incident.confidence} (Demo)
             </span>
           </div>
 
           <p className="text-sm sm:text-base font-medium leading-snug text-zinc-100 text-balance-editorial">
-            Checkout errors surged following <strong className="text-white font-semibold">Release 2.4.1</strong> due to an unhandled form exception triggered on mobile traffic.
+            {incident.rootSummary}
           </p>
 
           <div className="pt-2 border-t border-zinc-800 flex items-center justify-between">
@@ -184,8 +196,8 @@ export default function InvestigationGraph({ state, onEvidenceClick }) {
               <span>View telemetry evidence</span>
               <ChevronRight className="w-3.5 h-3.5 text-[var(--accent-signal)]" />
             </button>
-            <span className="text-[10px] font-mono text-zinc-500">
-              Synthesized in 420ms
+            <span className="text-[10px] font-mono text-zinc-400">
+              Demo synthesis · 420ms
             </span>
           </div>
         </motion.div>

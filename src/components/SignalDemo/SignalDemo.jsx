@@ -1,27 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../Button'
-import Badge from '../Badge'
 import InvestigationGraph from './InvestigationGraph'
-import { ArrowRight, RotateCcw, Loader2, Sparkles, Terminal, Activity, X, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, RotateCcw, Loader2, Terminal, Activity, X, CheckCircle2 } from 'lucide-react'
 
 /**
  * SignalDemo: The interactive core showcase component.
- * Demonstrates the automated root-cause investigation sequence with state-guarding,
- * accessible live regions, keyboard escape handling, and complete cleanup.
+ * Driven by the active incident data model with deterministic scenario rotation,
+ * accessible live regions, keyboard escape handling, and synchronized telemetry drawer.
  */
-export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspace' }) {
-  // Local state machine: 'idle' | 'investigating' | 'connecting' | 'revealed'
-  const [state, setState] = useState('idle')
+export default function SignalDemo({
+  incident,
+  state = 'idle',
+  onStartInvestigation,
+  onResetInvestigation,
+  id = 'hero-signal-demo',
+}) {
   const [showEvidence, setShowEvidence] = useState(false)
-  const timersRef = useRef([])
-
-  // Clear all pending timeouts on unmount
-  useEffect(() => {
-    return () => {
-      timersRef.current.forEach(clearTimeout)
-    }
-  }, [])
 
   // Close evidence panel on Escape key
   useEffect(() => {
@@ -34,37 +29,14 @@ export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspac
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [showEvidence])
 
-  const startInvestigation = () => {
-    if (state !== 'idle') return // State guard against rapid/concurrent triggers
-
-    // Clear any previous timers
-    timersRef.current.forEach(clearTimeout)
-    timersRef.current = []
-
-    // Step 1: Investigating state (Analyzing telemetry)
-    setState('investigating')
-
-    // Step 2: Connecting state (Tracing dependency graph)
-    const t1 = setTimeout(() => {
-      setState('connecting')
-    }, 800)
-
-    // Step 3: Revealed state (Root cause & connected nodes surfaced)
-    const t2 = setTimeout(() => {
-      setState('revealed')
-    }, 1700)
-
-    timersRef.current.push(t1, t2)
-  }
-
-  const resetInvestigation = () => {
-    timersRef.current.forEach(clearTimeout)
-    timersRef.current = []
-    setState('idle')
+  // Reset evidence drawer if incident changes
+  useEffect(() => {
     setShowEvidence(false)
-  }
+  }, [incident?.id])
 
   const isBusy = state === 'investigating' || state === 'connecting'
+
+  if (!incident) return null
 
   return (
     <section 
@@ -82,7 +54,7 @@ export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspac
         </div>
         <div className="hidden sm:flex items-center gap-1.5 font-mono text-[11px] text-[var(--text-muted)]">
           <Activity className="w-3 h-3 text-[var(--accent-signal)]" aria-hidden="true" />
-          <span>STREAM ID: #SIG-8924</span>
+          <span>STREAM ID: {incident.streamId}</span>
         </div>
       </div>
 
@@ -120,7 +92,7 @@ export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspac
               {state === 'revealed' && (
                 <>
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" aria-hidden="true" />
-                  <span className="text-emerald-700 font-mono">Synthesis Complete (0.42s)</span>
+                  <span className="text-emerald-700 font-mono">Demo synthesis complete (0.42s)</span>
                 </>
               )}
             </div>
@@ -133,23 +105,23 @@ export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspac
                 variant="secondary"
                 size="sm"
                 iconLeft={RotateCcw}
-                onClick={resetInvestigation}
-                className="w-full sm:w-auto text-xs"
-                aria-label="Reset investigation and replay demonstration"
+                onClick={onResetInvestigation}
+                className="w-full sm:w-auto text-xs font-medium cursor-pointer"
+                aria-label="Investigate next operational signal scenario"
               >
-                Investigate again
+                Investigate next signal →
               </Button>
             ) : (
               <Button
                 variant={state === 'idle' ? 'accent' : 'secondary'}
                 size="sm"
                 iconRight={state === 'idle' ? ArrowRight : undefined}
-                onClick={startInvestigation}
+                onClick={onStartInvestigation}
                 disabled={isBusy}
-                className="w-full sm:w-auto font-medium"
+                className="w-full sm:w-auto font-medium cursor-pointer"
                 aria-label={isBusy ? 'Investigation currently processing' : 'Start interactive signal root cause investigation'}
               >
-                {isBusy ? 'Analyzing...' : 'Investigate →'}
+                {isBusy ? 'Analyzing...' : 'Investigate a signal →'}
               </Button>
             )}
           </div>
@@ -157,12 +129,13 @@ export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspac
 
         {/* Dynamic Investigation Graph */}
         <InvestigationGraph
+          incident={incident}
           state={state}
           onEvidenceClick={() => setShowEvidence(true)}
         />
       </div>
 
-      {/* Slide-in Evidence Modal / Drawer */}
+      {/* Slide-in Evidence Modal / Drawer matching the active incident */}
       <AnimatePresence>
         {showEvidence && (
           <motion.div
@@ -172,7 +145,7 @@ export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspac
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             role="dialog"
             aria-modal="true"
-            aria-label="Telemetry Trace Evidence Log"
+            aria-label={`Telemetry Trace Evidence Log for ${incident.title}`}
             className="absolute inset-0 z-20 bg-[var(--bg-surface)] p-5 flex flex-col justify-between"
           >
             <div className="space-y-4">
@@ -180,7 +153,7 @@ export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspac
                 <div className="flex items-center gap-2">
                   <Terminal className="w-4 h-4 text-[var(--accent-signal)]" aria-hidden="true" />
                   <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--text-primary)]">
-                    Telemetry Trace Log (Verified)
+                    Telemetry Trace Log · {incident.streamId}
                   </h3>
                 </div>
                 <button
@@ -193,30 +166,22 @@ export default function SignalDemo({ onTriggerInvestigation, id = 'demo-workspac
                 </button>
               </div>
 
-              <div className="space-y-2.5 font-mono text-xs text-[var(--text-secondary)]">
-                <div className="p-2.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] space-y-1">
-                  <div className="text-[10px] text-[var(--text-muted)]">14:02:18 UTC · GITHUB_DEPLOY</div>
-                  <div className="text-[var(--text-primary)] font-semibold">Release 2.4.1 (commit #8ef31a) merged to production</div>
-                  <div className="text-[11px] text-[var(--text-muted)]">Diff: modified payment form payload validation regex.</div>
-                </div>
-
-                <div className="p-2.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] space-y-1">
-                  <div className="text-[10px] text-[var(--text-muted)]">14:05:42 UTC · CLOUDFLARE_EDGE</div>
-                  <div className="text-[var(--text-primary)] font-semibold">Spike in iOS Safari client traffic (+42%)</div>
-                  <div className="text-[11px] text-[var(--text-muted)]">Geographic cluster: US-East / EU-West mobile checkout flow.</div>
-                </div>
-
-                <div className="p-2.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] space-y-1">
-                  <div className="text-[10px] text-[var(--text-muted)]">14:06:15 UTC · SENTRY_EXCEPTION</div>
-                  <div className="text-[var(--accent-signal)] font-semibold">TypeError: undefined is not an object (evaluating 'e.postalCode')</div>
-                  <div className="text-[11px] text-[var(--text-muted)]">Origin: /checkout/PaymentForm.tsx:142 on WebKit 17.4+</div>
-                </div>
+              <div className="space-y-2 font-mono text-xs text-[var(--text-secondary)]">
+                {incident.evidence.map((ev, idx) => (
+                  <div key={idx} className="p-2.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] space-y-0.5">
+                    <div className="text-[10px] text-[var(--text-muted)]">{ev.time} · {ev.source}</div>
+                    <div className={`font-semibold ${ev.isAlert ? 'text-[var(--accent-signal)]' : 'text-[var(--text-primary)]'}`}>
+                      {ev.headline}
+                    </div>
+                    <div className="text-[11px] text-[var(--text-muted)]">{ev.detail}</div>
+                  </div>
+                ))}
               </div>
             </div>
 
             <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between">
               <span className="text-[11px] font-mono text-[var(--text-muted)]">
-                Simulated verified event logs
+                Simulated verified event logs ({incident.category})
               </span>
               <Button
                 variant="secondary"

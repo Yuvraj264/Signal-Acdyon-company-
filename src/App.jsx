@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './sections/Hero/Hero'
 import Problem from './sections/Problem/Problem'
@@ -7,16 +7,67 @@ import ProductPreview from './sections/ProductPreview/ProductPreview'
 import Philosophy from './sections/Philosophy/Philosophy'
 import FinalCTA from './sections/FinalCTA/FinalCTA'
 import Footer from './components/Footer'
+import { INCIDENT_SCENARIOS } from './data/incidents'
 
 export default function App() {
+  // Deterministic index-based scenario rotation
+  const [incidentIndex, setIncidentIndex] = useState(0)
+  const [investigationState, setInvestigationState] = useState('idle')
+  const timersRef = useRef([])
+
+  const activeIncident = INCIDENT_SCENARIOS[incidentIndex] || INCIDENT_SCENARIOS[0]
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach(clearTimeout)
+    }
+  }, [])
+
+  const startInvestigation = () => {
+    if (investigationState !== 'idle') return
+
+    timersRef.current.forEach(clearTimeout)
+    timersRef.current = []
+
+    setInvestigationState('investigating')
+
+    const t1 = setTimeout(() => {
+      setInvestigationState('connecting')
+    }, 800)
+
+    const t2 = setTimeout(() => {
+      setInvestigationState('revealed')
+    }, 1700)
+
+    timersRef.current.push(t1, t2)
+  }
+
+  const resetAndNextInvestigation = () => {
+    timersRef.current.forEach(clearTimeout)
+    timersRef.current = []
+    setInvestigationState('idle')
+    // Deterministically rotate to next incident: A -> B -> C -> D -> A
+    setIncidentIndex((prev) => (prev + 1) % INCIDENT_SCENARIOS.length)
+  }
+
+  const selectIncident = (incident) => {
+    const idx = INCIDENT_SCENARIOS.findIndex((i) => i.id === incident.id)
+    if (idx !== -1) {
+      timersRef.current.forEach(clearTimeout)
+      timersRef.current = []
+      setInvestigationState('idle')
+      setIncidentIndex(idx)
+    }
+  }
+
   const triggerInvestigation = () => {
+    if (investigationState === 'idle') {
+      startInvestigation()
+    }
     const demoElement = document.getElementById('hero-signal-demo')
     if (demoElement) {
       demoElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      const button = demoElement.querySelector('button')
-      if (button) {
-        button.click()
-      }
     }
   }
 
@@ -35,8 +86,13 @@ export default function App() {
 
       {/* Main Content Landmark */}
       <main id="main-content" className="flex-1">
-        {/* 2. Hero + Interactive Signal Investigation */}
-        <Hero onInvestigateClick={triggerInvestigation} />
+        {/* 2. Hero + Dynamic Interactive Signal Investigation */}
+        <Hero
+          incident={activeIncident}
+          state={investigationState}
+          onStartInvestigation={startInvestigation}
+          onResetInvestigation={resetAndNextInvestigation}
+        />
 
         {/* 3. Problem Section: Your Business is Loud */}
         <Problem />
@@ -44,8 +100,12 @@ export default function App() {
         {/* 4. Product Workflow: Collect -> Connect -> Act */}
         <ProductWorkflow />
 
-        {/* 5. Product Preview: Operator Workspace & Live Feed */}
-        <ProductPreview />
+        {/* 5. Product Preview: Operator Workspace (Synchronized with active incident) */}
+        <ProductPreview
+          activeIncident={activeIncident}
+          onSelectIncident={selectIncident}
+          incidents={INCIDENT_SCENARIOS}
+        />
 
         {/* 6. Philosophy: The Goal Isn't More Information */}
         <Philosophy />

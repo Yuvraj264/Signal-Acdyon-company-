@@ -1,59 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import Container from '../../components/Container'
 import SectionHeading from '../../components/SectionHeading'
 import Badge from '../../components/Badge'
 import { GitCommit, Sparkles } from 'lucide-react'
+import { INCIDENT_SCENARIOS } from '../../data/incidents'
 
 /**
- * ProductPreview: Illustrates the broader SIGNAL workspace interface with an interactive example signals feed.
+ * ProductPreview: Illustrates the broader SIGNAL workspace interface.
+ * Synchronized with the active investigated incident for seamless cross-section continuity.
  */
-export default function ProductPreview() {
-  const exampleSignals = [
-    {
-      id: 'sig-1',
-      title: 'Checkout failures',
-      change: '↑ 18.2%',
-      severity: 'Critical',
-      time: '4m ago',
-      sourceCount: 3,
-      rootSummary: 'Release 2.4.1 form validation regex exception on mobile Safari clients.',
-      connected: [
-        { label: 'Release 2.4.1', type: 'Deploy', status: 'Trigger' },
-        { label: 'Payment form', type: 'Component', status: 'Failing' },
-        { label: 'Mobile traffic', type: 'Telemetry', status: 'Surge' },
-      ],
-    },
-    {
-      id: 'sig-2',
-      title: 'API latency surge',
-      change: '↑ 340ms',
-      severity: 'Warning',
-      time: '18m ago',
-      sourceCount: 2,
-      rootSummary: 'Database connection pool saturation following bulk enterprise report export job.',
-      connected: [
-        { label: 'Async Worker #4', type: 'Job', status: 'Active' },
-        { label: 'Read Replica DB', type: 'Infra', status: 'Saturated' },
-      ],
-    },
-    {
-      id: 'sig-3',
-      title: 'Support ticket volume',
-      change: '↑ 7.8%',
-      severity: 'Notice',
-      time: '1h ago',
-      sourceCount: 2,
-      rootSummary: 'SaaS authentication token refresh expiration following OAuth provider policy update.',
-      connected: [
-        { label: 'Auth Provider', type: 'Vendor API', status: 'Updated' },
-        { label: 'Login Screen', type: 'Client', status: 'Affected' },
-      ],
-    },
-  ]
-
-  const [selectedId, setSelectedId] = useState('sig-1')
-  const selectedSignal = exampleSignals.find((s) => s.id === selectedId) || exampleSignals[0]
+export default function ProductPreview({
+  activeIncident,
+  onSelectIncident,
+  incidents = INCIDENT_SCENARIOS,
+}) {
+  const selectedIncident = activeIncident || incidents[0]
 
   return (
     <section id="workspace" className="py-20 sm:py-28 border-t border-[var(--border-subtle)] bg-[var(--bg-subtle)]/30">
@@ -94,7 +56,7 @@ export default function ProductPreview() {
               </span>
             </div>
             <span className="font-mono text-[11px] text-[var(--text-muted)] hidden sm:inline">
-              Filter: Active Anomalies (3)
+              Filter: Active Anomalies ({incidents.length})
             </span>
           </div>
 
@@ -112,8 +74,8 @@ export default function ProductPreview() {
               </div>
 
               <div className="space-y-2" role="tablist" aria-label="Example Signals List">
-                {exampleSignals.map((signal) => {
-                  const isSelected = signal.id === selectedId
+                {incidents.map((signal) => {
+                  const isSelected = signal.id === selectedIncident.id
                   return (
                     <button
                       key={signal.id}
@@ -121,7 +83,7 @@ export default function ProductPreview() {
                       role="tab"
                       aria-selected={isSelected}
                       aria-controls={`signal-panel-${signal.id}`}
-                      onClick={() => setSelectedId(signal.id)}
+                      onClick={() => onSelectIncident && onSelectIncident(signal)}
                       className={`w-full p-3.5 rounded-lg border text-left transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--accent-signal)] ${
                         isSelected
                           ? 'bg-[var(--bg-surface)] border-[var(--accent-signal)] shadow-xs'
@@ -146,7 +108,7 @@ export default function ProductPreview() {
                       </div>
 
                       <div className="mt-2 flex items-center justify-between text-[11px] font-mono text-[var(--text-muted)]">
-                        <span>{signal.connected.length} linked nodes</span>
+                        <span>{signal.nodes.length} linked nodes</span>
                         <span>{signal.time}</span>
                       </div>
                     </button>
@@ -157,27 +119,32 @@ export default function ProductPreview() {
 
             {/* Right Column: Selected Signal Causal Inspection */}
             <div 
-              id={`signal-panel-${selectedSignal.id}`}
+              id={`signal-panel-${selectedIncident.id}`}
               role="tabpanel"
-              aria-label={`Inspection for ${selectedSignal.title}`}
+              aria-label={`Inspection for ${selectedIncident.title}`}
               className="md:col-span-7 p-5 sm:p-7 space-y-6 bg-[var(--bg-surface)]"
             >
               {/* Selected Signal Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[var(--border-subtle)]">
                 <div>
-                  <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
-                    Selected Signal Inspection
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                      Selected Signal Inspection
+                    </span>
+                    <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                      · {selectedIncident.category}
+                    </span>
+                  </div>
                   <h3 className="text-lg font-bold text-[var(--text-primary)] mt-0.5">
-                    {selectedSignal.title}
+                    {selectedIncident.title}
                   </h3>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant={selectedSignal.severity === 'Critical' ? 'signal' : 'neutral'}>
-                    {selectedSignal.severity}
+                  <Badge variant={selectedIncident.severity === 'Critical' ? 'signal' : 'neutral'}>
+                    {selectedIncident.severity}
                   </Badge>
                   <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-[var(--bg-subtle)] border border-[var(--border-subtle)] text-[var(--text-primary)]">
-                    {selectedSignal.change}
+                    {selectedIncident.change}
                   </span>
                 </div>
               </div>
@@ -189,25 +156,25 @@ export default function ProductPreview() {
                   <span>Synthesized Causal Thread</span>
                 </div>
                 <p className="text-xs sm:text-sm text-[var(--text-primary)] leading-relaxed">
-                  {selectedSignal.rootSummary}
+                  {selectedIncident.rootSummary}
                 </p>
               </div>
 
               {/* Linked Causal Nodes */}
               <div className="space-y-2.5">
                 <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
-                  Correlated Event Nodes ({selectedSignal.connected.length})
+                  Correlated Event Nodes ({selectedIncident.nodes.length})
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {selectedSignal.connected.map((node, i) => (
+                  {selectedIncident.nodes.map((node) => (
                     <div
-                      key={i}
+                      key={node.id}
                       className="p-2.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-base)] flex items-center justify-between text-xs"
                     >
                       <div className="flex items-center gap-2 truncate">
                         <GitCommit className="w-3.5 h-3.5 text-[var(--text-secondary)] shrink-0" aria-hidden="true" />
                         <span className="font-medium text-[var(--text-primary)] truncate">
-                          {node.label}
+                          {node.title}
                         </span>
                       </div>
                       <span className="text-[10px] font-mono text-[var(--text-muted)] shrink-0">

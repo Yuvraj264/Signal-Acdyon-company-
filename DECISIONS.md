@@ -73,19 +73,22 @@ flowchart TD
 
 ## 6. Interaction Design: The Signal Investigation Engine
 
-The interactive centerpiece operates as a deterministic 4-state local state machine:
+The interactive centerpiece operates as a deterministic 4-state local state machine driven by a multi-scenario incident data model (`src/data/incidents.js`):
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Idle: Anomaly Stream Active (#SIG-8924)
+    [*] --> Idle: Anomaly Stream Active (e.g. #SIG-8924)
     Idle --> Investigating: User clicks "Investigate →"
     Investigating --> Connecting: 1/2 Telemetry Ingestion & Normalization (800ms)
     Connecting --> Revealed: 2/2 Graph Correlation & Dependency Tracing (900ms)
-    Revealed --> Idle: User clicks "Investigate again ↻"
+    Revealed --> Idle: User clicks "Investigate next signal →" (Deterministic Rotation)
 ```
 
+- **Deterministic Multi-Scenario Engine:** Separates incident data from presentation logic across 4 realistic operational demonstration scenarios (Payments checkout regression, API latency database saturation, OAuth token refresh surge, Edge middleware 502 spike).
+- **Index-Based Rotation:** Users can repeatedly explore different incident types via predictable index-based rotation (`0 → 1 → 2 → 3 → 0`) without using `Math.random()`.
+- **Cross-Section Continuity:** State is shared between the Hero and the `ProductPreview` Operator Workspace. Investigating a scenario in the Hero automatically synchronizes the workspace feed below so the visitor experiences a continuous, unified product narrative.
 - **Why Local State:** Pure React local state (`useState`, `useRef`, `useEffect`) ensures instant 0ms latency, predictable replay cycles, zero network dependency, and complete unmount cleanup.
-- **Telemetry Evidence Drawer:** An expandable modal allowing visitors to inspect timestamped simulated logs (Deployments, Cloudflare Edge spikes, Sentry exceptions). Includes keyboard `Escape` dismissal and ARIA dialog semantics.
+- **Telemetry Evidence Drawer:** An expandable modal allowing visitors to inspect timestamped simulated logs (Deployments, Cloudflare Edge spikes, Sentry exceptions) synchronized to the currently active scenario. Includes keyboard `Escape` dismissal and ARIA dialog semantics.
 
 ---
 

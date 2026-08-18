@@ -10,15 +10,19 @@ import { ArrowRight, ArrowDown } from 'lucide-react'
  * Hero Section for SIGNAL.
  * Combines high-impact editorial typography with immediate interactive product demonstration.
  */
-export default function Hero({ onInvestigateClick }) {
+export default function Hero({
+  incident,
+  state,
+  onStartInvestigation,
+  onResetInvestigation,
+}) {
   const handleHeroCta = () => {
+    if (state === 'idle') {
+      onStartInvestigation()
+    }
     const demoElement = document.getElementById('hero-signal-demo')
     if (demoElement) {
       demoElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      const button = demoElement.querySelector('button')
-      if (button) {
-        button.click()
-      }
     }
   }
 
@@ -76,7 +80,7 @@ export default function Hero({ onInvestigateClick }) {
                 onClick={handleHeroCta}
                 className="w-full sm:w-auto shadow-sm cursor-pointer"
               >
-                Investigate a signal
+                {state === 'revealed' ? 'Investigate next signal' : 'Investigate a signal'}
               </Button>
 
               <a
@@ -117,7 +121,13 @@ export default function Hero({ onInvestigateClick }) {
             transition={{ duration: 0.55, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-6 flex justify-center w-full"
           >
-            <SignalDemo id="hero-signal-demo" />
+            <SignalDemo
+              id="hero-signal-demo"
+              incident={incident}
+              state={state}
+              onStartInvestigation={onStartInvestigation}
+              onResetInvestigation={onResetInvestigation}
+            />
           </motion.div>
         </div>
       </Container>
