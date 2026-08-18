@@ -167,6 +167,55 @@ flowchart TD
   - Browser subagent verification: Tested at 1440px desktop width and 390px/500px mobile widths. Mobile drawer opens/closes cleanly, button hover states work, no horizontal scrollbars exist.
 - **Current Status:** Phase 1: COMPLETE. Ready for Phase 2.
 
+### Phase 2 — Hero + Signal Investigation
+- **Date:** 2026-08-18
+- **Product Story:** Designed the Hero section directly around an interactive root-cause investigation rather than static screenshots or generic marketing claims. This communicates what SIGNAL does in under 3 seconds: detecting anomalous shifts, correlating cross-functional events, and synthesizing actionable causes.
+- **Hero Decision:**
+  - **Headline:** `SEE WHAT CHANGED. KNOW WHAT MATTERS.` in strong editorial typography.
+  - **Supporting Copy:** `Signal turns scattered business activity into the few changes worth your attention.`
+  - **Primary CTA:** Single confident `Investigate a signal →` button paired with a subtle anchor to `#how-it-works`.
+  - **Product Visualization:** Positioned `SignalDemo` as the centerpiece in an asymmetric grid on desktop (1440px) and a stacked hierarchy on mobile (390px).
+- **Interaction Decision:**
+  - Built a 4-state local investigation machine (`idle` → `investigating` → `connecting` → `revealed`) with simulated telemetry telemetry scans, branching event graphs, and root-cause synthesis.
+  - Added an expandable *Telemetry Evidence Drawer* allowing users to inspect verified timestamped logs (Deployments, Edge traffic, Exception traces).
+  - Implemented replay via `Investigate again ↻` and protected rapid clicks using state-based debouncing.
+- **State Model:**
+
+```mermaid
+stateDiagram-v2
+    [*] --> Idle: Example Signal Displayed
+    Idle --> Investigating: User clicks "Investigate →"
+    Investigating --> Connecting: Telemetry Ingested (800ms)
+    Connecting --> Revealed: Dependencies Correlated (900ms)
+    Revealed --> Idle: User clicks "Investigate again"
+```
+
+- **Information Flow:**
+
+```mermaid
+flowchart LR
+    A[Signal Detected: Checkout failures ↑18.2%] --> B[Investigate]
+    B --> C[Analyze Telemetry Streams]
+    C --> D[Connect Related Events: Release 2.4.1, Mobile Traffic, Payment Form]
+    D --> E[Reveal Likely Cause: Release 2.4.1 regression]
+    E --> F[Understand What Changed & Take Action]
+```
+
+- **UX Reasoning:** Communicates SIGNAL's core value proposition through direct tactile interaction. The explicit label `INTERACTIVE DEMO · EXAMPLE WORKSPACE` maintains complete honesty by showing realistic simulated telemetry rather than fabricating customer claims.
+- **Technical Decision:** Implemented with pure local React state (`useState`, `useRef`, `useEffect`) and Framer Motion transitions. Avoided external state libraries, heavy graph engines, or backends to maintain zero latency and instant interactivity.
+- **Alternatives Rejected:**
+  1. *Static Dashboard Screenshot:* Rejected because it fails to demonstrate the intelligent correlation flow.
+  2. *Heavy D3/Canvas Graph Library:* Rejected to keep bundle size minimal and ensure zero layout shifting across mobile screens.
+  3. *Real AI/Backend API:* Rejected because deterministic client-side simulation provides instant, reliable storytelling without network latency or authentication blockers.
+- **Trade-offs:** Kept the graph structure focused on a clear 3-node causality tree to ensure immediate comprehension and zero horizontal overflow on mobile viewports.
+- **Verification:**
+  - Dev server running on `http://localhost:3000/`.
+  - Production build (`npm run build`) passed with zero errors (`built in 931ms`).
+  - Rapid click handling verified (disabled while analyzing).
+  - Replay and evidence drawer toggling verified.
+  - Zero console errors and clean layout at 390px and 1440px.
+- **Current Status:** Phase 2: COMPLETE. Ready for Phase 3.
+
 ```mermaid
 flowchart TD
     A[SIGNAL Visual Identity]
@@ -183,6 +232,7 @@ flowchart TD
     E --> K[Badges: Pulsing Signal & Status Tags]
     E --> L[SectionHeading & Container]
     E --> M[Footer: Minimal & Honest Disclosures]
+    E --> N[SignalDemo & InvestigationGraph]
 ```
 
 ---
@@ -196,13 +246,17 @@ flowchart TD
 - **Phase 1:**
   - *AI Implemented:* Centralized Tailwind v4 theme tokens in `src/index.css`, motion presets in `src/utils/motion.js`, component primitives (`Container.jsx`, `Button.jsx`, `Badge.jsx`, `Card.jsx`, `SectionHeading.jsx`, `Navbar.jsx`, `Footer.jsx`), and the Phase 1 Design Foundation showcase in `App.jsx`.
   - *Manually Reviewed & Tuned:* Removed `overflow-x: hidden` to guarantee authentic structural zero-overflow; verified focus-visible styling for accessibility; adjusted mobile drawer toggle mechanics.
-  - *Tested:* Automated browser subagent visual inspection at 1440px and mobile widths, hover states, console logs, and Vite production bundle compilation.
+  - *Tested:* Automated visual inspection at 1440px and mobile widths, hover states, console logs, and Vite production bundle compilation.
+- **Phase 2:**
+  - *AI Implemented:* `src/sections/Hero/Hero.jsx`, `src/components/SignalDemo/SignalDemo.jsx`, and `src/components/SignalDemo/InvestigationGraph.jsx` with full 4-state investigation flow, SVG connector branches, synthesis cards, and telemetry log drawer.
+  - *Manually Reviewed & Tuned:* Configured timeout cleanup with `useRef`, debounced rapid clicks during scanning, and calibrated responsive vertical tree layout for mobile viewports.
+  - *Tested:* Production build validation, state transitions (idle → investigating → connecting → revealed → replay), and evidence panel drawer.
 
 ---
 
 ## 10. Known Issues
 
-*None.* All foundation components and layout constraints verified cleanly.
+*None.* Hero section and interactive Signal investigation flow are verified and stable.
 
 ---
 
@@ -211,4 +265,5 @@ flowchart TD
 - Sound design / haptic audio feedback on signal investigation resolution (optional subtle click).
 - Keyboard navigation shortcuts (e.g., `Space` / `Enter` to step through investigation stages).
 - Interactive timeline scrubber to inspect signals over arbitrary time windows.
+
 
