@@ -15,6 +15,13 @@ export const INCIDENT_SCENARIOS = [
     time: '4m ago',
     confidence: '96.4%',
     summaryStats: '14 signals analyzed · 3 correlated · 1 dismissed noise',
+    topology: 'forked-branch',
+    countStory: { detected: 14, relevant: 4, correlated: 3, actionable: 1 },
+    edges: [
+      { from: 'release', to: 'payment', label: 'triggers exception', isCausal: true },
+      { from: 'payment', to: 'traffic', label: 'amplifies error rate', isCausal: true },
+      { from: 'support_noise', to: 'payment', label: 'low correlation', isCausal: false },
+    ],
     nodes: [
       {
         id: 'release',
@@ -107,6 +114,12 @@ export const INCIDENT_SCENARIOS = [
     time: '18m ago',
     confidence: '94.8%',
     summaryStats: '18 streams scanned · 3 correlated · 1 root trigger',
+    topology: 'linear-chain',
+    countStory: { detected: 18, relevant: 5, correlated: 3, actionable: 1 },
+    edges: [
+      { from: 'worker', to: 'replica', label: 'table lock', isCausal: true },
+      { from: 'replica', to: 'requests', label: 'pool exhausted', isCausal: true },
+    ],
     nodes: [
       {
         id: 'worker',
@@ -187,6 +200,13 @@ export const INCIDENT_SCENARIOS = [
     time: '1h ago',
     confidence: '97.2%',
     summaryStats: '22 events evaluated · 3 correlated · 1 dismissed noise',
+    topology: 'loop-retry',
+    countStory: { detected: 22, relevant: 4, correlated: 3, actionable: 1 },
+    edges: [
+      { from: 'oauth', to: 'auth', label: 'invalid token payload', isCausal: true },
+      { from: 'auth', to: 'tickets', label: 're-auth loop', isCausal: true },
+      { from: 'promo_noise', to: 'auth', label: 'unrelated campaign', isCausal: false },
+    ],
     nodes: [
       {
         id: 'oauth',
@@ -279,6 +299,12 @@ export const INCIDENT_SCENARIOS = [
     time: '2m ago',
     confidence: '98.1%',
     summaryStats: '16 traces parsed · 3 correlated · 1 root trigger',
+    topology: 'regional-hub',
+    countStory: { detected: 16, relevant: 4, correlated: 3, actionable: 1 },
+    edges: [
+      { from: 'release_edge', to: 'middleware', label: 'header syntax error', isCausal: true },
+      { from: 'middleware', to: 'geo', label: '502 bad gateway', isCausal: true },
+    ],
     nodes: [
       {
         id: 'release_edge',

@@ -76,13 +76,34 @@ This document tracks the active development phases, implementation milestones, v
 
 ---
 
+## Phase 11 — Live Signal Map (Signature Interaction)
+
+- **Status:** **COMPLETED & VERIFIED**
+- **Objective:** Transform the Hero investigation visualization into a data-driven **Live Signal Map** as SIGNAL's signature interaction.
+
+### Implemented:
+- **Data-Driven Graph Topology:**
+  - Augmented `src/data/incidents.js` with deterministic topology hints (`forked-branch`, `linear-chain`, `loop-retry`, `regional-hub`), directed causal edges, and explicit funnel count metrics (`countStory`).
+- **5-Stage Investigation Progression:**
+  - **STATE 1 — SCANNING:** Primary anomaly becomes active (`CHECKOUT FAILURES +18.2%`) with status `1/3: SCANNING SIGNALS & DISCOVERING NODES...`.
+  - **STATE 2 — SIGNALS FOUND:** Candidate nodes enter progressively with staggered timing (`delay: item.delay`).
+  - **STATE 3 — CORRELATING:** SVG connector arms animate smoothly across connected nodes (`2/3: CORRELATING CAUSAL DEPENDENCY GRAPH...`).
+  - **STATE 4 — FILTERING:** Weak/irrelevant noise signals (`isDismissed: true`) recede gracefully (opacity 0.55, line-through title, dashed connector arm, `Noise dismissed` status tag).
+  - **STATE 5 — ROOT CAUSE:** Causal path connector arms and receiving node cards highlight in Electric Orange (`#FF4D00`), culminating in the Root Trigger synthesis card (`3/3: NOISE FILTERED · ROOT CAUSE IDENTIFIED`).
+- **Compact Signal Count Story Bar:**
+  - Rendered compact status line: `14 signals detected → 4 relevant → 3 correlated → 1 actionable thread`.
+- **Responsive & Accessibility Performance:**
+  - Verified 390px vertical investigation tree with zero horizontal overflow, 1440px expressive dynamic graph, keyboard navigation, `aria-live="polite"` status announcements, and full `prefers-reduced-motion` compliance.
+
+---
+
 ## Verification & Build Summary
 
 - **Production Build Command:** `npm run build`
 - **Build Output:**
   - `dist/index.html`: `1.36 kB` (gzip: `0.76 kB`)
-  - `dist/assets/index-BtlwjKXV.css`: `39.13 kB` (gzip: `7.56 kB`)
-  - `dist/assets/index-CNcI7tvO.js`: `387.44 kB` (gzip: `118.76 kB`)
+  - `dist/assets/index-BOKX4KM3.css`: `40.93 kB` (gzip: `7.76 kB`)
+  - `dist/assets/index-ErNasHNp.js`: `391.88 kB` (gzip: `119.84 kB`)
 - **Errors & Warnings:** `0 errors`, `0 warnings`
 
 ---
@@ -90,3 +111,4 @@ This document tracks the active development phases, implementation milestones, v
 ## Next Steps
 - **Final Deployment:** Connect GitHub repository `Yuvraj264/Signal-Acdyon-company-` to Vercel for live hosting.
 - **Final Submission:** Submit repository and live URL for assessment evaluation.
+

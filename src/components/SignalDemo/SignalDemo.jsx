@@ -80,19 +80,19 @@ export default function SignalDemo({
               {state === 'investigating' && (
                 <>
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-[var(--accent-signal)]" aria-hidden="true" />
-                  <span className="text-[var(--accent-signal)] font-mono">1/2: Ingesting & normalizing telemetry...</span>
+                  <span className="text-[var(--accent-signal)] font-mono">1/3: Scanning signals & discovering nodes...</span>
                 </>
               )}
               {state === 'connecting' && (
                 <>
                   <Loader2 className="w-3.5 h-3.5 animate-spin text-[var(--accent-signal)]" aria-hidden="true" />
-                  <span className="text-[var(--accent-signal)] font-mono">2/2: Correlating cross-source graph...</span>
+                  <span className="text-[var(--accent-signal)] font-mono">2/3: Correlating causal dependency graph...</span>
                 </>
               )}
               {state === 'revealed' && (
                 <>
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" aria-hidden="true" />
-                  <span className="text-emerald-700 font-mono">Demo synthesis complete (0.42s)</span>
+                  <span className="text-emerald-700 font-mono">3/3: Noise filtered · Root cause identified</span>
                 </>
               )}
             </div>
@@ -125,6 +125,28 @@ export default function SignalDemo({
               </Button>
             )}
           </div>
+        </div>
+
+        {/* Compact Signal Count Story */}
+        <div 
+          className="flex items-center justify-between px-3 py-2 rounded-lg bg-[var(--bg-subtle)]/80 border border-[var(--border-subtle)] font-mono text-[11px] text-[var(--text-secondary)] whitespace-nowrap overflow-x-auto gap-1"
+          aria-label="Signal Analysis Funnel"
+        >
+          <span className="text-[var(--text-primary)] font-medium">
+            {incident.countStory?.detected || 14} signals detected
+          </span>
+          <span className="text-[var(--text-muted)] text-[10px]">↓</span>
+          <span>
+            {incident.countStory?.relevant || 4} relevant
+          </span>
+          <span className="text-[var(--text-muted)] text-[10px]">↓</span>
+          <span>
+            {incident.countStory?.correlated || 3} correlated
+          </span>
+          <span className="text-[var(--text-muted)] text-[10px]">↓</span>
+          <span className="text-[var(--accent-signal)] font-semibold">
+            {incident.countStory?.actionable || 1} actionable thread
+          </span>
         </div>
 
         {/* Dynamic Investigation Graph */}
