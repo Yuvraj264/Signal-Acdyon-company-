@@ -95,15 +95,36 @@ This document tracks the active development phases, implementation milestones, v
 - **Responsive & Accessibility Performance:**
   - Verified 390px vertical investigation tree with zero horizontal overflow, 1440px expressive dynamic graph, keyboard navigation, `aria-live="polite"` status announcements, and full `prefers-reduced-motion` compliance.
 
+## Phase 12 — Investigation Timeline + Graph Synchronization
+
+- **Status:** **COMPLETED & VERIFIED**
+- **Objective:** Add a compact, interactive **Investigation Timeline** synchronized with the **Live Signal Map**.
+
+### Implemented:
+- **Data Model Timeline Mapping:**
+  - Added explicit `timeline` arrays to each incident scenario in `src/data/incidents.js` establishing deterministic `TIMELINE EVENT → GRAPH NODE` mappings with timestamps (`14:02:11 UTC`), event types (`DEPLOYMENT`, `ERROR`, `TRAFFIC`, `CUSTOMER OPS`), titles, and descriptions.
+- **Two-Way Synchronization:**
+  - Created `InvestigationTimeline.jsx` component.
+  - Hovering/focusing/selecting a timeline event highlights the matching graph node card and connector line in Electric Orange (`#FF4D00`).
+  - Hovering/focusing/selecting a graph node highlights the matching timeline event.
+- **Investigation Sequence Lockstep:**
+  - **IDLE:** Quiet timeline state (`Chronological Trace Log Standby`).
+  - **INVESTIGATING / CONNECTING:** Timeline events stream in lockstep with graph node discovery.
+  - **REVEALED:** Causal thread events illuminate in `#FF4D00` with `✓ Causal` badges, while noise events recede into `Noise` filtered styling (opacity 0.55, line-through typography).
+- **Flexible View Composition:**
+  - Added tab switcher in `SignalDemo.jsx`: `Signal Map` (default centerpiece), `Timeline`, and `Map + Timeline` combined side-by-side split view.
+- **Responsive & Accessibility QA:**
+  - Verified single-column 390px mobile vertical flow with 0 horizontal overflow, keyboard focusability (`tabIndex={0}`), `aria-live="polite"` status announcements, and full `prefers-reduced-motion` compliance.
+
 ---
 
 ## Verification & Build Summary
 
 - **Production Build Command:** `npm run build`
 - **Build Output:**
-  - `dist/index.html`: `1.36 kB` (gzip: `0.76 kB`)
-  - `dist/assets/index-BOKX4KM3.css`: `40.93 kB` (gzip: `7.76 kB`)
-  - `dist/assets/index-ErNasHNp.js`: `391.88 kB` (gzip: `119.84 kB`)
+  - `dist/index.html`: `1.36 kB` (gzip: `0.75 kB`)
+  - `dist/assets/index-D8UsHieZ.css`: `42.37 kB` (gzip: `7.87 kB`)
+  - `dist/assets/index-4x5MBL2f.js`: `403.64 kB` (gzip: `121.75 kB`)
 - **Errors & Warnings:** `0 errors`, `0 warnings`
 
 ---
@@ -111,4 +132,5 @@ This document tracks the active development phases, implementation milestones, v
 ## Next Steps
 - **Final Deployment:** Connect GitHub repository `Yuvraj264/Signal-Acdyon-company-` to Vercel for live hosting.
 - **Final Submission:** Submit repository and live URL for assessment evaluation.
+
 

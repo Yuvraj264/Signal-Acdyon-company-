@@ -46,7 +46,14 @@ const TOPOLOGY_LABELS = {
  * Renders dynamic node topologies, SVG causal connector paths, signal vs. noise filtering,
  * micro-interactions, and root cause synthesis.
  */
-export default function InvestigationGraph({ incident, state, onEvidenceClick }) {
+export default function InvestigationGraph({
+  incident,
+  state,
+  onEvidenceClick,
+  activeNodeId,
+  onNodeHover,
+  onNodeSelect,
+}) {
   if (!incident) return null
 
   const isIdle = state === 'idle'
@@ -144,6 +151,7 @@ export default function InvestigationGraph({ incident, state, onEvidenceClick })
             const Icon = ICON_MAP[item.iconName] || Activity
             const isDismissed = item.isDismissed
             const isCausalPath = item.highlight && isRevealed
+            const isSelected = activeNodeId === item.id
 
             return (
               <motion.div
@@ -158,7 +166,15 @@ export default function InvestigationGraph({ incident, state, onEvidenceClick })
                   delay: item.delay,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className="relative pl-4 sm:pl-5"
+                tabIndex={0}
+                role="button"
+                aria-label={`Graph Node: ${item.title}`}
+                onMouseEnter={() => onNodeHover?.(item.id)}
+                onMouseLeave={() => onNodeHover?.(null)}
+                onFocus={() => onNodeHover?.(item.id)}
+                onBlur={() => onNodeHover?.(null)}
+                onClick={() => onNodeSelect?.(item.id)}
+                className="relative pl-4 sm:pl-5 group cursor-pointer focus-visible:outline-2 focus-visible:outline-[var(--accent-signal)] rounded-lg"
               >
                 {/* Horizontal Connector Arm */}
                 <motion.div
@@ -169,8 +185,8 @@ export default function InvestigationGraph({ incident, state, onEvidenceClick })
                     delay: item.delay + 0.1,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className={`absolute left-[-10px] sm:left-[-14px] top-4.5 w-3.5 sm:w-4 h-0.5 origin-left ${
-                    isCausalPath
+                  className={`absolute left-[-10px] sm:left-[-14px] top-4.5 w-3.5 sm:w-4 h-0.5 origin-left transition-colors ${
+                    isSelected || isCausalPath
                       ? 'bg-[var(--accent-signal)]'
                       : isDismissed
                       ? 'bg-[var(--border-subtle)] border-t border-dashed border-[var(--border-medium)]'
@@ -180,19 +196,23 @@ export default function InvestigationGraph({ incident, state, onEvidenceClick })
 
                 {/* Node Card */}
                 <div
-                  className={`p-3 sm:p-3.5 rounded-lg border transition-all duration-300 ${
-                    isDismissed
+                  className={`p-3 sm:p-3.5 rounded-lg border transition-all duration-200 ${
+                    isSelected
+                      ? 'bg-[var(--accent-signal-subtle)] border-[var(--accent-signal)] shadow-sm ring-2 ring-[var(--accent-signal)]'
+                      : isDismissed
                       ? 'bg-[var(--bg-subtle)]/40 border-[var(--border-subtle)]'
                       : isCausalPath
                       ? 'bg-[var(--accent-signal-subtle)]/50 border-[var(--accent-signal-border)] shadow-xs ring-1 ring-[var(--accent-signal-border)]'
-                      : 'bg-[var(--bg-surface)] border-[var(--border-subtle)] shadow-2xs'
+                      : 'bg-[var(--bg-surface)] border-[var(--border-subtle)] shadow-2xs group-hover:border-[var(--border-strong)]'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div
                         className={`p-1.5 rounded shrink-0 transition-colors ${
-                          isDismissed
+                          isSelected
+                            ? 'bg-[var(--accent-signal)] text-white'
+                            : isDismissed
                             ? 'bg-[var(--bg-subtle)] text-[var(--text-muted)]'
                             : isCausalPath
                             ? 'bg-[var(--accent-signal)] text-white'
@@ -235,7 +255,7 @@ export default function InvestigationGraph({ incident, state, onEvidenceClick })
                       ) : (
                         <Badge
                           variant={item.tagVariant}
-                          dot={isCausalPath}
+                          dot={isCausalPath || isSelected}
                           className="text-[10px] py-0 px-1.5"
                         >
                           {item.tag}

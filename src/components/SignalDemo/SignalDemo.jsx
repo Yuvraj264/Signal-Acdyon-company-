@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Button from '../Button'
 import InvestigationGraph from './InvestigationGraph'
-import { ArrowRight, RotateCcw, Loader2, Terminal, Activity, X, CheckCircle2 } from 'lucide-react'
+import InvestigationTimeline from './InvestigationTimeline'
+import { ArrowRight, RotateCcw, Loader2, Terminal, Activity, X, CheckCircle2, Network, Clock } from 'lucide-react'
 
 /**
  * SignalDemo: The interactive core showcase component.
- * Driven by the active incident data model with deterministic scenario rotation,
- * accessible live regions, keyboard escape handling, and synchronized telemetry drawer.
+ * Synchronizes the data-driven Live Signal Map and Investigation Timeline.
  */
 export default function SignalDemo({
   incident,
@@ -17,6 +17,8 @@ export default function SignalDemo({
   id = 'hero-signal-demo',
 }) {
   const [showEvidence, setShowEvidence] = useState(false)
+  const [activeTab, setActiveTab] = useState('graph') // 'graph' | 'timeline' | 'combined'
+  const [hoveredNodeId, setHoveredNodeId] = useState(null)
 
   // Close evidence panel on Escape key
   useEffect(() => {
@@ -32,6 +34,7 @@ export default function SignalDemo({
   // Reset evidence drawer if incident changes
   useEffect(() => {
     setShowEvidence(false)
+    setHoveredNodeId(null)
   }, [incident?.id])
 
   const isBusy = state === 'investigating' || state === 'connecting'
@@ -42,7 +45,7 @@ export default function SignalDemo({
     <section 
       id={id} 
       aria-label="Interactive Signal Demo Workspace"
-      className="relative w-full max-w-xl mx-auto rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-sm overflow-hidden"
+      className="relative w-full max-w-xl lg:max-w-2xl mx-auto rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] shadow-sm overflow-hidden"
     >
       {/* Top Header: Demo Disclaimer & Live Status */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-subtle)] bg-[var(--bg-subtle)]/70 text-xs">
@@ -59,7 +62,7 @@ export default function SignalDemo({
       </div>
 
       {/* Main Signal Workspace Body */}
-      <div className="p-4 sm:p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-5">
         {/* Status Indicator Bar with Accessible Live Announcement */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[var(--border-subtle)]">
           <div>
@@ -127,34 +130,109 @@ export default function SignalDemo({
           </div>
         </div>
 
-        {/* Compact Signal Count Story */}
-        <div 
-          className="flex items-center justify-between px-3 py-2 rounded-lg bg-[var(--bg-subtle)]/80 border border-[var(--border-subtle)] font-mono text-[11px] text-[var(--text-secondary)] whitespace-nowrap overflow-x-auto gap-1"
-          aria-label="Signal Analysis Funnel"
-        >
-          <span className="text-[var(--text-primary)] font-medium">
-            {incident.countStory?.detected || 14} signals detected
-          </span>
-          <span className="text-[var(--text-muted)] text-[10px]">↓</span>
-          <span>
-            {incident.countStory?.relevant || 4} relevant
-          </span>
-          <span className="text-[var(--text-muted)] text-[10px]">↓</span>
-          <span>
-            {incident.countStory?.correlated || 3} correlated
-          </span>
-          <span className="text-[var(--text-muted)] text-[10px]">↓</span>
-          <span className="text-[var(--accent-signal)] font-semibold">
-            {incident.countStory?.actionable || 1} actionable thread
-          </span>
+        {/* View Selection & Signal Funnel Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+          {/* View Mode Selector Tabs */}
+          <div className="flex items-center gap-1 p-1 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border-subtle)] font-mono text-[11px]">
+            <button
+              type="button"
+              onClick={() => setActiveTab('graph')}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-medium cursor-pointer transition-colors ${
+                activeTab === 'graph'
+                  ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-semibold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              <Network className="w-3 h-3 text-[var(--accent-signal)]" />
+              <span>Signal Map</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('timeline')}
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded font-medium cursor-pointer transition-colors ${
+                activeTab === 'timeline'
+                  ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-semibold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              <Clock className="w-3 h-3 text-[var(--accent-signal)]" />
+              <span>Timeline</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('combined')}
+              className={`hidden xs:flex items-center gap-1.5 px-2.5 py-1 rounded font-medium cursor-pointer transition-colors ${
+                activeTab === 'combined'
+                  ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-2xs font-semibold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              <span>Map + Timeline</span>
+            </button>
+          </div>
+
+          {/* Compact Signal Count Funnel */}
+          <div className="text-[11px] font-mono text-[var(--text-muted)] flex items-center gap-1 overflow-x-auto">
+            <span className="text-[var(--text-primary)] font-semibold">{incident.countStory?.detected || 14}</span> detected
+            <span>→</span>
+            <span className="text-[var(--text-primary)] font-semibold">{incident.countStory?.correlated || 3}</span> correlated
+            <span>→</span>
+            <span className="text-[var(--accent-signal)] font-semibold">1 Thread</span>
+          </div>
         </div>
 
-        {/* Dynamic Investigation Graph */}
-        <InvestigationGraph
-          incident={incident}
-          state={state}
-          onEvidenceClick={() => setShowEvidence(true)}
-        />
+        {/* View Composition: Graph vs Timeline vs Combined */}
+        {activeTab === 'graph' && (
+          <InvestigationGraph
+            incident={incident}
+            state={state}
+            activeNodeId={hoveredNodeId}
+            onNodeHover={setHoveredNodeId}
+            onNodeSelect={setHoveredNodeId}
+            onEvidenceClick={() => setShowEvidence(true)}
+          />
+        )}
+
+        {activeTab === 'timeline' && (
+          <InvestigationTimeline
+            incident={incident}
+            state={state}
+            activeNodeId={hoveredNodeId}
+            onNodeHover={setHoveredNodeId}
+            onNodeSelect={setHoveredNodeId}
+          />
+        )}
+
+        {activeTab === 'combined' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
+                Signal Map View
+              </div>
+              <InvestigationGraph
+                incident={incident}
+                state={state}
+                activeNodeId={hoveredNodeId}
+                onNodeHover={setHoveredNodeId}
+                onNodeSelect={setHoveredNodeId}
+                onEvidenceClick={() => setShowEvidence(true)}
+              />
+            </div>
+
+            <div className="space-y-2 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-[var(--border-subtle)] md:pl-4">
+              <div className="text-[10px] font-mono text-[var(--text-muted)] uppercase tracking-wider">
+                Synchronized Event Log
+              </div>
+              <InvestigationTimeline
+                incident={incident}
+                state={state}
+                activeNodeId={hoveredNodeId}
+                onNodeHover={setHoveredNodeId}
+                onNodeSelect={setHoveredNodeId}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Slide-in Evidence Modal / Drawer matching the active incident */}
@@ -220,3 +298,4 @@ export default function SignalDemo({
     </section>
   )
 }
+
