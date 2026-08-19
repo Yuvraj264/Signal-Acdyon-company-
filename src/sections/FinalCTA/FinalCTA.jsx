@@ -31,7 +31,7 @@ export default function FinalCTA({ onExploreClick }) {
           {/* Eyebrow */}
           <div>
             <Badge variant="signal" isMono={true}>
-              INTELLIGENT BUSINESS VISIBILITY
+              OPERATIONAL DECISION CLARITY
             </Badge>
           </div>
 
@@ -47,7 +47,7 @@ export default function FinalCTA({ onExploreClick }) {
 
           {/* Supporting Copy */}
           <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed text-balance-editorial">
-            Experience the difference between dashboard overload and automated causal clarity.
+            Replace dashboard alert fatigue with automated causal clarity.
           </p>
 
           {/* Primary CTA Button */}
@@ -59,7 +59,7 @@ export default function FinalCTA({ onExploreClick }) {
               onClick={handleScrollToHero}
               className="w-full sm:w-auto shadow-sm cursor-pointer"
             >
-              Explore Signal
+              Explore Signal demo
             </Button>
           </div>
 

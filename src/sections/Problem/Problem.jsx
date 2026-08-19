@@ -39,17 +39,17 @@ export default function Problem() {
             </h2>
 
             <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed text-balance-editorial">
-              Dashboards. Alerts. Reports. Messages. Spreadsheets. Modern teams are inundated with thousands of raw metrics every day.
+              Dashboards show what is happening everywhere. They do not tell you why it happened here.
             </p>
 
             <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed text-balance-editorial">
-              There is no shortage of data. The problem is identifying what actually changed, why it matters, and where human attention is needed.
+              Your business generates hundreds of noisy events every hour. Most don't matter. A few break revenue. Signal discards the noise and isolates the causal thread.
             </p>
 
             <div className="pt-4 flex items-center gap-3">
               <span className="h-px w-8 bg-[var(--accent-signal)]" />
               <span className="text-sm font-semibold tracking-tight text-[var(--text-primary)]">
-                Signal finds the thread.
+                Find the change that caused the storm.
               </span>
             </div>
           </motion.div>
@@ -100,7 +100,7 @@ export default function Problem() {
               {/* Convergence Arrow */}
               <div className="flex items-center justify-center py-1">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-subtle)] border border-[var(--border-subtle)]">
-                  <span>Synthesized through correlation engine</span>
+                  <span>Filtered & correlated across causal layers</span>
                   <ArrowRight className="w-3.5 h-3.5 text-[var(--accent-signal)]" />
                 </div>
               </div>

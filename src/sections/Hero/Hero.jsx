@@ -39,7 +39,7 @@ export default function Hero({
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <Badge variant="signal" isMono={true}>
-                BUSINESS INTELLIGENCE, WITHOUT THE NOISE.
+                OPERATIONAL CLARITY · WITHOUT THE NOISE
               </Badge>
             </motion.div>
 
@@ -63,7 +63,7 @@ export default function Hero({
               transition={{ duration: 0.45, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
               className="text-base sm:text-lg text-[var(--text-secondary)] max-w-xl leading-relaxed text-balance-editorial"
             >
-              Signal turns scattered business activity into the few changes worth your attention. We correlate anomalies, traces, and releases into clear, prioritized threads.
+              Three alerts fired at once. Find the single change that caused them. Signal correlates fragmented traces, deployments, and edge spikes into clear, decision-ready causal threads.
             </motion.p>
 
             {/* Hero CTAs */}
@@ -100,16 +100,16 @@ export default function Hero({
               className="pt-6 border-t border-[var(--border-subtle)] grid grid-cols-3 gap-4 text-xs font-mono text-[var(--text-secondary)]"
             >
               <div>
-                <div className="text-[var(--text-primary)] font-semibold">01 · Normalization</div>
-                <div className="text-[var(--text-muted)] text-[11px]">Unifies 14+ streams</div>
+                <div className="text-[var(--text-primary)] font-semibold">01 · Noise Filter</div>
+                <div className="text-[var(--text-muted)] text-[11px]">Discards 90%+ alerts</div>
               </div>
               <div>
                 <div className="text-[var(--text-primary)] font-semibold">02 · Correlation</div>
-                <div className="text-[var(--text-muted)] text-[11px]">Causal graph tracing</div>
+                <div className="text-[var(--text-muted)] text-[11px]">Causal dependency graph</div>
               </div>
               <div>
-                <div className="text-[var(--text-primary)] font-semibold">03 · Synthesis</div>
-                <div className="text-[var(--text-muted)] text-[11px]">Actionable root cause</div>
+                <div className="text-[var(--text-primary)] font-semibold">03 · Root Trigger</div>
+                <div className="text-[var(--text-muted)] text-[11px]">Actionable decision</div>
               </div>
             </motion.div>
           </div>

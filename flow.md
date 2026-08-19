@@ -4,20 +4,19 @@ This document tracks the active development phases, implementation milestones, v
 
 ---
 
-## Current Status: Dynamic Investigation Engine & Cross-Section Continuity
+## Current Status: Human Product Polish & Anti-Generic Pass
 
 - **Status:** **COMPLETED & VERIFIED**
-- **Objective:** Upgrade the investigation engine from a single hardcoded scenario to a deterministic multi-scenario engine with cross-section state continuity between the Hero and the Operator Workspace.
+- **Objective:** Infuse human product personality, noise-filtering distinction, dismissed evidence nodes, grounded operator copy, and controlled structural graph diversity.
 - **Target Repository:** `Yuvraj264/Signal-Acdyon-company-` (`main` branch).
 
 ---
 
-## Completed Phases (Phases 0 – 10 + Final Functional Enhancement)
+## Completed Phases (Phases 0 – 10 + Final Human Polish)
 
 ### Phase 0: Project Initialization & Foundation
 - **Goal:** Set up clean, fast development environment.
 - **Implemented:** React 19 + Vite 6 + Tailwind CSS v4 + Framer Motion + Lucide React.
-- **Artifacts:** `package.json`, `vite.config.js`, `index.html`, `src/index.css`.
 
 ### Phase 1: Design Foundation & Primitives
 - **Goal:** Establish light-first editorial design system.
@@ -25,21 +24,15 @@ This document tracks the active development phases, implementation milestones, v
 
 ### Phase 2: Hero + Interactive Signal Investigation
 - **Goal:** Showcase the product in the first 3 seconds without generic marketing fluff.
-- **Implemented:** 4-state local state machine (`idle` → `investigating` → `connecting` → `revealed`) with animated SVG connector branches, root cause synthesis card, and expandable Telemetry Evidence Drawer (`SignalDemo.jsx`, `InvestigationGraph.jsx`).
+- **Implemented:** 4-state local state machine (`idle` → `investigating` → `connecting` → `revealed`) with animated SVG connector branches, root cause synthesis card, and expandable Telemetry Evidence Drawer.
 
 ### Phase 3: Complete Homepage Story
 - **Goal:** Build the complete end-to-end product narrative around the centerpiece hero.
-- **Implemented:**
-  - `Problem.jsx`: Operational noise convergence diagram (alert fatigue → prioritized thread).
-  - `ProductWorkflow.jsx`: 3-stage intelligence engine (`01 COLLECT → 02 CONNECT → 03 ACT`).
-  - `ProductPreview.jsx`: Interactive multi-signal workspace feed with `EXAMPLE WORKSPACE · DEMO DATA` badge.
-  - `Philosophy.jsx`: Editorial manifesto (*"The goal isn't more information. It's better attention."*).
-  - `FinalCTA.jsx`: Re-engagement callout scrolling back to the investigation engine.
-  - `Navbar.jsx` & `Footer.jsx`: Section anchors and prototype disclosures.
+- **Implemented:** `Problem.jsx`, `ProductWorkflow.jsx`, `ProductPreview.jsx`, `Philosophy.jsx`, `FinalCTA.jsx`, `Navbar.jsx` & `Footer.jsx`.
 
 ### Phase 4: Motion + Premium Polish
 - **Goal:** Refine motion hierarchy and micro-interactions.
-- **Implemented:** Restrained cubic-out easing curve (`[0.16, 1, 0.3, 1]`), button hover arrow nudging, tactile active compression, initial hero entrance choreography, and subtle radial grid background texture (`24px` grid pitch).
+- **Implemented:** Restrained cubic-out easing curve (`[0.16, 1, 0.3, 1]`), button hover arrow nudging, tactile active compression, initial hero entrance choreography, and subtle radial grid background texture.
 
 ### Phase 5: Responsive + Mobile Excellence
 - **Goal:** Design intentional compositions across 390px mobile and 1440px desktop.
@@ -67,17 +60,19 @@ This document tracks the active development phases, implementation milestones, v
 
 ---
 
-## Final Enhancement — Dynamic Investigation Engine & Cross-Section Continuity
+## Final Enhancement — Human Product Polish & Anti-Generic Pass
 
-- **Deterministic Multi-Scenario Architecture (`src/data/incidents.js`):**
-  - **Scenario A (`checkout-regression`):** Checkout failures ↑ 18.2% → Release 2.4.1 form validation regex exception.
-  - **Scenario B (`api-latency`):** API latency surge ↑ 340ms → Database connection pool saturation via bulk report export.
-  - **Scenario C (`support-surge`):** Support ticket volume ↑ 31.0% → OAuth identity provider token refresh policy change.
-  - **Scenario D (`deployment-regression`):** Edge error rate spike ↑ 27.4% → Edge middleware header-forwarding regression.
-- **Data-Driven Graph (`InvestigationGraph.jsx`):** Dynamically maps nodes, branch connectors, icons, tags, and synthesis summaries from the active incident object with zero hardcoded scenario JSX.
-- **Telemetry Evidence Synchronization (`SignalDemo.jsx`):** Telemetry trace drawer dynamically surfaces the exact chronological event logs matching the investigated scenario.
-- **Cross-Section State Continuity (`App.jsx` & `ProductPreview.jsx`):** Investigating a scenario in the Hero automatically updates the selected incident in the Operator Workspace feed below so the visitor experiences a continuous, unified product session.
-- **Deterministic Rotation:** Index-based deterministic rotation (`A → B → C → D → A`) on repeated `Investigate next signal →` triggers.
+- **Signal vs. Noise Distinction:**
+  - Implemented explicit **Dismissed Noise** nodes (`isDismissed: true`) in the graph (e.g. general billing support tickets or promotional marketing email blast), demonstrating that Signal's primary value is noise filtering rather than blind aggregation.
+  - Added summary metric badges to root cause conclusions: `14 signals analyzed · 3 correlated · 1 dismissed noise → 1 Actionable Thread`.
+- **Controlled Structural Asymmetry:**
+  - Designed unique graph topology structures across all 4 scenarios in `src/data/incidents.js` (Linear code regression, database connection pool saturation, OAuth vendor token loop, and regional CDN edge regression).
+- **Grounded Anti-Generic Copywriting:**
+  - Audited and replaced vague SaaS tropes with operator-centric language across `Hero.jsx`, `Problem.jsx`, `ProductWorkflow.jsx`, and `FinalCTA.jsx`.
+- **Revealed Conclusion Hierarchy:**
+  - Standardized root cause conclusion: `ROOT TRIGGER IDENTIFIED` → Causal explanation → `Noise filtered metric strip` → `VIEW TELEMETRY EVIDENCE →`.
+- **Production Build:**
+  - Verified `npm run build` compiling cleanly in `22.44s` with `0 errors` and `0 warnings`.
 
 ---
 
@@ -86,8 +81,8 @@ This document tracks the active development phases, implementation milestones, v
 - **Production Build Command:** `npm run build`
 - **Build Output:**
   - `dist/index.html`: `1.36 kB` (gzip: `0.76 kB`)
-  - `dist/assets/index-YF1h3jA-.css`: `38.35 kB` (gzip: `7.44 kB`)
-  - `dist/assets/index-CYaC243O.js`: `385.16 kB` (gzip: `118.18 kB`)
+  - `dist/assets/index-BtlwjKXV.css`: `39.13 kB` (gzip: `7.56 kB`)
+  - `dist/assets/index-CNcI7tvO.js`: `387.44 kB` (gzip: `118.76 kB`)
 - **Errors & Warnings:** `0 errors`, `0 warnings`
 
 ---
