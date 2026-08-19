@@ -13,6 +13,7 @@ export default function App() {
   // Deterministic index-based scenario rotation
   const [incidentIndex, setIncidentIndex] = useState(0)
   const [investigationState, setInvestigationState] = useState('idle')
+  const [hasInvestigated, setHasInvestigated] = useState(false)
   const timersRef = useRef([])
 
   const activeIncident = INCIDENT_SCENARIOS[incidentIndex] || INCIDENT_SCENARIOS[0]
@@ -31,6 +32,7 @@ export default function App() {
     timersRef.current = []
 
     setInvestigationState('investigating')
+    setHasInvestigated(true)
 
     const t1 = setTimeout(() => {
       setInvestigationState('connecting')
@@ -58,6 +60,7 @@ export default function App() {
       timersRef.current = []
       setInvestigationState('idle')
       setIncidentIndex(idx)
+      setHasInvestigated(true)
     }
   }
 
@@ -98,11 +101,16 @@ export default function App() {
         <Problem />
 
         {/* 4. Product Workflow: Collect -> Connect -> Act */}
-        <ProductWorkflow />
+        <ProductWorkflow
+          activeIncident={activeIncident}
+          hasInvestigated={hasInvestigated}
+        />
 
         {/* 5. Product Preview: Operator Workspace (Synchronized with active incident) */}
         <ProductPreview
           activeIncident={activeIncident}
+          investigationState={investigationState}
+          hasInvestigated={hasInvestigated}
           onSelectIncident={selectIncident}
           incidents={INCIDENT_SCENARIOS}
         />

@@ -10,7 +10,7 @@ import { Database, GitFork, CheckCircle2, ArrowDown } from 'lucide-react'
  * 01 COLLECT -> 02 CONNECT -> 03 ACT
  * Responsive horizontal grid on desktop, interconnected vertical flow on mobile.
  */
-export default function ProductWorkflow() {
+export default function ProductWorkflow({ activeIncident, hasInvestigated }) {
   const steps = [
     {
       num: '01',
@@ -18,7 +18,7 @@ export default function ProductWorkflow() {
       tagline: 'Bring business signals together.',
       desc: 'Conceptually normalizes disparate event streams (deployments, billing metrics, error logs, traffic surges) into a unified time-series event schema.',
       icon: Database,
-      highlight: '14+ Streams Normalized',
+      highlight: hasInvestigated ? `${activeIncident?.countStory?.detected || 14} Streams Normalized` : '14+ Streams Normalized',
     },
     {
       num: '02',
@@ -26,7 +26,7 @@ export default function ProductWorkflow() {
       tagline: 'Find relationships between changes.',
       desc: 'Traces causal topology across infrastructure and business layers. Identifies when an alert in one service is merely a downstream symptom of another.',
       icon: GitFork,
-      highlight: 'Graph Correlation',
+      highlight: hasInvestigated ? `${activeIncident?.category || 'Causal'} Correlation` : 'Graph Correlation',
     },
     {
       num: '03',
@@ -34,7 +34,7 @@ export default function ProductWorkflow() {
       tagline: 'Focus attention where it matters.',
       desc: 'Replaces pages of noisy dashboards with synthesized, high-confidence root cause threads so human operators can make decisive interventions.',
       icon: CheckCircle2,
-      highlight: 'Prioritized Synthesis',
+      highlight: hasInvestigated ? '1 Actionable Thread' : 'Prioritized Synthesis',
     },
   ]
 

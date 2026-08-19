@@ -12,6 +12,8 @@ import { INCIDENT_SCENARIOS } from '../../data/incidents'
  */
 export default function ProductPreview({
   activeIncident,
+  investigationState,
+  hasInvestigated,
   onSelectIncident,
   incidents = INCIDENT_SCENARIOS,
 }) {
@@ -29,9 +31,15 @@ export default function ProductPreview({
             align="left"
           />
           <div className="shrink-0">
-            <Badge variant="neutral" isMono={true}>
-              EXAMPLE WORKSPACE · DEMO DATA
-            </Badge>
+            {hasInvestigated ? (
+              <Badge variant="signal" isMono={true}>
+                ACTIVE INVESTIGATION · {selectedIncident.title.toUpperCase()}
+              </Badge>
+            ) : (
+              <Badge variant="neutral" isMono={true}>
+                EXAMPLE WORKSPACE · DEMO DATA
+              </Badge>
+            )}
           </div>
         </div>
 
@@ -122,8 +130,21 @@ export default function ProductPreview({
               id={`signal-panel-${selectedIncident.id}`}
               role="tabpanel"
               aria-label={`Inspection for ${selectedIncident.title}`}
-              className="md:col-span-7 p-5 sm:p-7 space-y-6 bg-[var(--bg-surface)]"
+              className="md:col-span-7 p-5 sm:p-7 space-y-5 bg-[var(--bg-surface)]"
             >
+              {/* Active Context Banner */}
+              {hasInvestigated && (
+                <div className="px-3 py-2 rounded bg-[var(--accent-signal-subtle)] border border-[var(--accent-signal-border)] text-xs font-mono text-[var(--accent-signal)] flex items-center justify-between">
+                  <div className="flex items-center gap-2 font-semibold">
+                    <span className="w-2 h-2 rounded-full bg-[var(--accent-signal)] animate-pulse" />
+                    <span>ACTIVE CONTEXT: {selectedIncident.title} ({selectedIncident.change})</span>
+                  </div>
+                  <span className="text-[10px] text-[var(--text-secondary)] hidden xs:inline">
+                    {selectedIncident.summaryStats}
+                  </span>
+                </div>
+              )}
+
               {/* Selected Signal Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[var(--border-subtle)]">
                 <div>
@@ -169,11 +190,17 @@ export default function ProductPreview({
                   {selectedIncident.nodes.map((node) => (
                     <div
                       key={node.id}
-                      className="p-2.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-base)] flex items-center justify-between text-xs"
+                      className={`p-2.5 rounded-md border flex items-center justify-between text-xs transition-colors ${
+                        node.isDismissed
+                          ? 'bg-[var(--bg-subtle)]/40 border-[var(--border-subtle)] text-[var(--text-muted)]'
+                          : node.highlight
+                          ? 'bg-[var(--accent-signal-subtle)]/40 border-[var(--accent-signal-border)] text-[var(--text-primary)] font-semibold'
+                          : 'bg-[var(--bg-base)] border-[var(--border-subtle)] text-[var(--text-primary)]'
+                      }`}
                     >
                       <div className="flex items-center gap-2 truncate">
-                        <GitCommit className="w-3.5 h-3.5 text-[var(--text-secondary)] shrink-0" aria-hidden="true" />
-                        <span className="font-medium text-[var(--text-primary)] truncate">
+                        <GitCommit className={`w-3.5 h-3.5 shrink-0 ${node.highlight ? 'text-[var(--accent-signal)]' : 'text-[var(--text-secondary)]'}`} aria-hidden="true" />
+                        <span className={`truncate ${node.isDismissed ? 'line-through decoration-[var(--border-strong)]' : ''}`}>
                           {node.title}
                         </span>
                       </div>

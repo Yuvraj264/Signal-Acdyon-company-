@@ -75,9 +75,10 @@ The incident data is strictly separated from presentation logic across 4 realist
 4. **`deployment-regression`:** Edge error rate spike ↑ 27.4% (Edge Routing) → Edge middleware header-forwarding regression.
 
 ### Shared State & Cross-Section Continuity (`src/App.jsx`)
-- State is lifted to `App.jsx` (`incidentIndex`, `investigationState`, `activeIncident`).
+- State is lifted to `App.jsx` (`incidentIndex`, `investigationState`, `hasInvestigated`, `activeIncident`).
+- **Single Source of Truth:** `App.jsx` orchestrates `activeIncident` across all sections (`Hero` → `SignalDemo` → `ProductWorkflow` → `ProductPreview`).
 - **Deterministic Scenario Rotation:** Investigating in the hero progresses index-based rotation (`0 → 1 → 2 → 3 → 0`), allowing visitors to repeatedly explore different incident types without relying on `Math.random()`.
-- **Cross-Section Continuity:** Triggering an investigation in the Hero automatically updates the selected incident in the `ProductPreview` Operator Workspace below. Selecting an incident in the workspace also synchronizes the Hero, creating a unified product narrative.
+- **Cross-Section Continuity:** Triggering or selecting an investigation in the Hero automatically updates the active incident and displays `ACTIVE INVESTIGATION · {SCENARIO}` in the `ProductPreview` Operator Workspace below. Selecting an incident in the workspace also synchronizes the Hero, creating a unified product narrative.
 
 ---
 

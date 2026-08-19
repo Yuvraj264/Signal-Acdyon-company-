@@ -134,6 +134,28 @@ This document tracks the active development phases, implementation milestones, v
   - Verified across 390px mobile and 1440px desktop.
   - Production build compiled cleanly in `1.09s` with 0 errors and 0 warnings.
 
+## Phase 14 — Cross-Page Investigation Continuity
+
+- **Status:** **COMPLETED & VERIFIED**
+- **Objective:** Make the entire homepage remember and synchronize the active investigation context (`Hero` → `SignalDemo` → `ProductWorkflow` → `ProductPreview`).
+
+### Implemented:
+- **Single Source of Truth State Architecture:**
+  - Lifted `hasInvestigated` boolean state to `App.jsx` alongside `incidentIndex`, `investigationState`, and `activeIncident`.
+- **Default vs. Active Investigation Workspace:**
+  - On initial load: `ProductPreview` displays `EXAMPLE WORKSPACE · DEMO DATA`.
+  - Upon starting/selecting an investigation: `ProductPreview` dynamically updates to display `ACTIVE INVESTIGATION · {SCENARIO}` with matching evidence, metrics, and correlated event nodes.
+- **Bi-Directional Hero ↔ Workspace Synchronization:**
+  - Investigating or rotating a scenario in the Hero updates the Operator Workspace immediately.
+  - Selecting any incident in the Operator Workspace updates `Hero` / `SignalDemo` synchronously.
+- **Workflow Narrative Alignment:**
+  - Updated stage output badges in `ProductWorkflow.jsx` to reflect the active incident context (`14 Streams Normalized`, `${category} Correlation`, `1 Actionable Thread`).
+- **Deterministic 4-Scenario Rotation:**
+  - Preserved `0 → 1 → 2 → 3 → 0` index rotation. No `Math.random()`, no stale state.
+- **Responsive & Production Build QA:**
+  - Verified at 390px mobile and 1440px desktop with zero horizontal overflow.
+  - Production build compiled cleanly in `2.43s` with **0 errors and 0 warnings**.
+
 ---
 
 ## Verification & Build Summary
@@ -142,7 +164,7 @@ This document tracks the active development phases, implementation milestones, v
 - **Build Output:**
   - `dist/index.html`: `1.36 kB` (gzip: `0.76 kB`)
   - `dist/assets/index-CVTax5NK.css`: `42.71 kB` (gzip: `7.91 kB`)
-  - `dist/assets/index-BHaqTXPZ.js`: `406.80 kB` (gzip: `122.44 kB`)
+  - `dist/assets/index-CXk1S0Zk.js`: `408.18 kB` (gzip: `122.74 kB`)
 - **Errors & Warnings:** `0 errors`, `0 warnings`
 
 ---
@@ -150,6 +172,7 @@ This document tracks the active development phases, implementation milestones, v
 ## Next Steps
 - **Final Deployment:** Connect GitHub repository `Yuvraj264/Signal-Acdyon-company-` to Vercel for live hosting.
 - **Final Submission:** Submit repository and live URL for assessment evaluation.
+
 
 
 
