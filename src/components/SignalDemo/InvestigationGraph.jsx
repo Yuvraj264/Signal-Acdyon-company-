@@ -249,9 +249,11 @@ export default function InvestigationGraph({
 
                     <div className="shrink-0 pl-1">
                       {isDismissed ? (
-                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium text-[var(--text-muted)] bg-[var(--bg-subtle)] border border-[var(--border-subtle)]">
-                          Noise dismissed
-                        </span>
+                        <div className="text-right">
+                          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono font-medium text-[var(--text-muted)] bg-[var(--bg-subtle)] border border-[var(--border-subtle)]">
+                            Noise dismissed
+                          </span>
+                        </div>
                       ) : (
                         <Badge
                           variant={item.tagVariant}
@@ -263,6 +265,14 @@ export default function InvestigationGraph({
                       )}
                     </div>
                   </div>
+
+                  {/* Explicit Rejection Rationale for Discarded Noise Nodes */}
+                  {isDismissed && item.filterReason && (
+                    <div className="mt-1.5 pt-1.5 border-t border-[var(--border-subtle)]/80 text-[10px] font-mono text-[var(--text-muted)] flex items-center gap-1.5">
+                      <span className="font-semibold text-[var(--text-secondary)] uppercase shrink-0">FILTER REASON:</span>
+                      <span className="truncate text-[var(--text-muted)]">{item.filterReason}</span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )
@@ -270,7 +280,7 @@ export default function InvestigationGraph({
         </div>
       )}
 
-      {/* STATE 5 ROOT CAUSE SYNTHESIS CARD */}
+      {/* STATE 5 ROOT CAUSE SYNTHESIS & EXPLAINABILITY CARD */}
       {isRevealed && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -294,6 +304,18 @@ export default function InvestigationGraph({
           <p className="text-sm sm:text-base font-medium leading-snug text-zinc-100 text-balance-editorial">
             {incident.rootSummary}
           </p>
+
+          {/* Explainability Decision Rationale */}
+          {incident.causalRationale && (
+            <div className="p-3 rounded bg-zinc-900/90 border border-zinc-800 text-xs font-mono space-y-1.5">
+              <div className="text-[10px] text-[var(--accent-signal)] font-bold uppercase tracking-wider">
+                Why this root trigger was selected:
+              </div>
+              <p className="text-zinc-300 leading-relaxed text-[11px] font-sans">
+                {incident.causalRationale}
+              </p>
+            </div>
+          )}
 
           {/* Summary Metric Strip */}
           <div className="px-3 py-2 rounded bg-zinc-900/90 border border-zinc-800 flex items-center justify-between text-[11px] font-mono text-zinc-400">
@@ -319,4 +341,3 @@ export default function InvestigationGraph({
     </div>
   )
 }
-

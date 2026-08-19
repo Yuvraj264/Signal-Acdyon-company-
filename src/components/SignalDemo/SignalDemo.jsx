@@ -172,8 +172,10 @@ export default function SignalDemo({
           </div>
 
           {/* Compact Signal Count Funnel */}
-          <div className="text-[11px] font-mono text-[var(--text-muted)] flex items-center gap-1 overflow-x-auto">
+          <div className="text-[11px] font-mono text-[var(--text-muted)] flex items-center gap-1 overflow-x-auto whitespace-nowrap">
             <span className="text-[var(--text-primary)] font-semibold">{incident.countStory?.detected || 14}</span> detected
+            <span>→</span>
+            <span className="text-[var(--text-muted)]">noise discarded</span>
             <span>→</span>
             <span className="text-[var(--text-primary)] font-semibold">{incident.countStory?.correlated || 3}</span> correlated
             <span>→</span>

@@ -116,15 +116,33 @@ This document tracks the active development phases, implementation milestones, v
 - **Responsive & Accessibility QA:**
   - Verified single-column 390px mobile vertical flow with 0 horizontal overflow, keyboard focusability (`tabIndex={0}`), `aria-live="polite"` status announcements, and full `prefers-reduced-motion` compliance.
 
+## Phase 13 — Noise Filtering + Explainable Root Cause
+
+- **Status:** **COMPLETED & VERIFIED**
+- **Objective:** Demonstrate **SIGNAL ≠ MORE INFORMATION → SIGNAL = BETTER ATTENTION** with explainable root cause selection and explicit noise filtering rationale.
+
+### Implemented:
+- **Explainable Data Model Extensions:**
+  - Extended `src/data/incidents.js` with node relevance (`relevance: 'high'` / `'medium'` / `'low'`), decision status (`status: 'correlated'` / `'discarded'`), explicit rejection reasons (`filterReason`), and `causalRationale`.
+- **Explicit Noise Rejection Rationale:**
+  - Rendered inline filter reasons on discarded noise nodes in `InvestigationGraph.jsx` and timeline events in `InvestigationTimeline.jsx` (e.g. `FILTER REASON: Weak temporal correlation & unrelated billing queue`).
+- **Explainable Root Cause Decision Log:**
+  - Added an **Explainability Rationale Section** inside the revealed root-cause synthesis card detailing why the primary root trigger was selected over rejected candidates.
+- **Funnel Metric Emphasis:**
+  - Updated workspace funnel header to highlight noise reduction: `14 detected → noise discarded → 3 correlated → 1 Thread`.
+- **Responsive & Production Build QA:**
+  - Verified across 390px mobile and 1440px desktop.
+  - Production build compiled cleanly in `1.09s` with 0 errors and 0 warnings.
+
 ---
 
 ## Verification & Build Summary
 
 - **Production Build Command:** `npm run build`
 - **Build Output:**
-  - `dist/index.html`: `1.36 kB` (gzip: `0.75 kB`)
-  - `dist/assets/index-D8UsHieZ.css`: `42.37 kB` (gzip: `7.87 kB`)
-  - `dist/assets/index-4x5MBL2f.js`: `403.64 kB` (gzip: `121.75 kB`)
+  - `dist/index.html`: `1.36 kB` (gzip: `0.76 kB`)
+  - `dist/assets/index-CVTax5NK.css`: `42.71 kB` (gzip: `7.91 kB`)
+  - `dist/assets/index-BHaqTXPZ.js`: `406.80 kB` (gzip: `122.44 kB`)
 - **Errors & Warnings:** `0 errors`, `0 warnings`
 
 ---
@@ -132,5 +150,6 @@ This document tracks the active development phases, implementation milestones, v
 ## Next Steps
 - **Final Deployment:** Connect GitHub repository `Yuvraj264/Signal-Acdyon-company-` to Vercel for live hosting.
 - **Final Submission:** Submit repository and live URL for assessment evaluation.
+
 
 

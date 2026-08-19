@@ -168,6 +168,14 @@ export default function InvestigationTimeline({
                       )}
                     </div>
                   </div>
+
+                  {/* Inline Rejection Reason for Discarded Timeline Event */}
+                  {isDismissed && item.filterReason && (
+                    <div className="mt-1.5 pt-1 border-t border-[var(--border-subtle)] text-[10px] font-mono text-[var(--text-muted)] flex items-center gap-1.5">
+                      <span className="font-semibold text-[var(--text-secondary)] uppercase shrink-0">FILTERED:</span>
+                      <span className="truncate text-[var(--text-muted)]">{item.filterReason}</span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )
