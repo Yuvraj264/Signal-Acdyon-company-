@@ -48,9 +48,23 @@ export default function App() {
   const resetAndNextInvestigation = () => {
     timersRef.current.forEach(clearTimeout)
     timersRef.current = []
-    setInvestigationState('idle')
-    // Deterministically rotate to next incident: A -> B -> C -> D -> A
+
+    // 1. Deterministically rotate to next incident: A -> B -> C -> D -> A
     setIncidentIndex((prev) => (prev + 1) % INCIDENT_SCENARIOS.length)
+    setHasInvestigated(true)
+
+    // 2. Immediately start investigating the next scenario
+    setInvestigationState('investigating')
+
+    const t1 = setTimeout(() => {
+      setInvestigationState('connecting')
+    }, 800)
+
+    const t2 = setTimeout(() => {
+      setInvestigationState('revealed')
+    }, 1700)
+
+    timersRef.current.push(t1, t2)
   }
 
   const selectIncident = (incident) => {

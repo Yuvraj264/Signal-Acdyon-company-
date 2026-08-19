@@ -152,9 +152,10 @@ This document tracks the active development phases, implementation milestones, v
   - Updated stage output badges in `ProductWorkflow.jsx` to reflect the active incident context (`14 Streams Normalized`, `${category} Correlation`, `1 Actionable Thread`).
 - **Deterministic 4-Scenario Rotation:**
   - Preserved `0 → 1 → 2 → 3 → 0` index rotation. No `Math.random()`, no stale state.
+  - *Note:* Investigate Next Signal directly advances to the next deterministic incident and starts its investigation without returning to idle or requiring a second user action.
 - **Responsive & Production Build QA:**
   - Verified at 390px mobile and 1440px desktop with zero horizontal overflow.
-  - Production build compiled cleanly in `2.43s` with **0 errors and 0 warnings**.
+  - Production build compiled cleanly in `1.88s` with **0 errors and 0 warnings**.
 
 ---
 

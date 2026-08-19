@@ -108,7 +108,11 @@ export default function SignalDemo({
                 variant="secondary"
                 size="sm"
                 iconLeft={RotateCcw}
-                onClick={onResetInvestigation}
+                onClick={() => {
+                  setShowEvidence(false)
+                  setHoveredNodeId(null)
+                  onResetInvestigation?.()
+                }}
                 className="w-full sm:w-auto text-xs font-medium cursor-pointer"
                 aria-label="Investigate next operational signal scenario"
               >
